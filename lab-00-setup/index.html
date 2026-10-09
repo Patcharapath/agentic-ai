@@ -1,0 +1,918 @@
+<!doctype html>
+<html lang="th" data-lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เตรียมเครื่องและเรียก LLM ครั้งแรก</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600&display=swap">
+<style>
+/* Shared tokens, language switching and reading typography for all course pages. */
+:root {
+  --ink: #0d1526;
+  --ink-2: #16213a;
+  --ink-3: #22304f;
+  --slide-fg: #eaf0ff;
+  --slide-dim: #9fb0d0;
+  --accent: #f6b93b;
+  --accent-2: #4fd1c5;
+  --paper: #fbf9f4;
+  --paper-2: #f3efe5;
+  --text: #1e2330;
+  --muted: #5d6577;
+  --line: #e2dccd;
+  --ex-bg: #e9f5f2;
+  --ex-line: #23897c;
+  --warn-bg: #fdf1dc;
+  --warn-line: #c9820a;
+  --link-bg: #ecf0fb;
+  --link-line: #4a63c4;
+  --code-bg: #182036;
+  --code-fg: #dbe6ff;
+  --ok: #1f9d6b;
+  --bad: #d24b4b;
+  --font-ui: "IBM Plex Sans Thai", "Noto Sans Thai", "Leelawadee UI", "Thonburi", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-read: "IBM Plex Sans Thai Looped", "IBM Plex Sans Thai", "Noto Sans Thai Looped", "Leelawadee UI", "Thonburi", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --topbar-h: 52px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { font-family: var(--font-ui); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+/* Language switching: every translated node carries lang="th" or lang="en". */
+html[data-lang="th"] body [lang="en"],
+html[data-lang="en"] body [lang="th"] { display: none !important; }
+
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Top bar (dark, shared by modules and labs) */
+.topbar {
+  height: var(--topbar-h); display: flex; align-items: center; gap: 12px;
+  padding: 0 14px; background: var(--ink); color: var(--slide-fg);
+  border-bottom: 1px solid var(--ink-3);
+}
+.brand { font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.brand b { color: var(--accent); font-weight: 700; }
+.chip {
+  font-size: .78rem; font-weight: 600; padding: 3px 9px; border-radius: 999px;
+  background: var(--ink-3); color: var(--slide-fg); white-space: nowrap;
+}
+.topbar .title { flex: 1; min-width: 0; font-size: .95rem; color: var(--slide-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tb-btn {
+  height: 34px; min-width: 34px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--ink-3);
+  background: transparent; color: var(--slide-fg); font-size: .85rem; white-space: nowrap;
+}
+.tb-btn:hover { background: var(--ink-2); }
+.seg { display: inline-flex; border: 1px solid var(--ink-3); border-radius: 8px; overflow: hidden; }
+.seg button { height: 32px; padding: 0 11px; border: 0; background: transparent; color: var(--slide-dim); font-size: .85rem; font-weight: 600; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: #231a04; }
+
+/* Reading typography (notes pane, lab guide body) */
+.prose { font-family: var(--font-read); font-size: 1.02rem; line-height: 1.8; overflow-wrap: anywhere; }
+.prose p { margin: 0 0 .8em; }
+.prose ul, .prose ol { margin: 0 0 .9em; padding-left: 1.4em; }
+.prose li { margin: .2em 0; }
+.prose h4 { font-family: var(--font-ui); font-size: 1rem; margin: 1.2em 0 .4em; }
+.prose a { color: var(--link-line); }
+.prose strong { font-weight: 600; }
+.prose code {
+  font-family: var(--font-mono); font-size: .88em; background: var(--paper-2);
+  border: 1px solid var(--line); border-radius: 4px; padding: .08em .35em;
+}
+.prose pre {
+  position: relative; background: var(--code-bg); color: var(--code-fg); border-radius: 8px;
+  padding: 14px 16px; overflow-x: auto; line-height: 1.55; margin: 0 0 1em;
+}
+.prose pre code { background: none; border: 0; padding: 0; color: inherit; font-size: .86rem; white-space: pre; }
+.prose kbd {
+  font-family: var(--font-mono); font-size: .82em; border: 1px solid #c9c2b0; border-bottom-width: 2px;
+  border-radius: 5px; padding: .05em .4em; background: #fff;
+}
+.prose table { border-collapse: collapse; width: 100%; margin: 0 0 1em; font-size: .94rem; line-height: 1.55; }
+.prose th, .prose td { border: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; }
+.prose th { background: var(--paper-2); font-family: var(--font-ui); font-weight: 600; }
+.table-wrap { overflow-x: auto; }
+
+/* Callouts. A Markdown blockquote is an example box. */
+.prose blockquote, .callout {
+  margin: 0 0 1em; padding: 10px 14px 10px 16px; border-left: 4px solid var(--ex-line);
+  background: var(--ex-bg); border-radius: 0 8px 8px 0;
+}
+.prose blockquote > :last-child, .callout > :last-child { margin-bottom: 0; }
+.prose blockquote::before, .callout::before {
+  display: block; font-family: var(--font-ui); font-size: .74rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--ex-line); margin-bottom: 2px;
+}
+html[data-lang="th"] .prose blockquote::before { content: "ตัวอย่าง"; }
+html[data-lang="en"] .prose blockquote::before { content: "Example"; }
+.callout.warn { border-color: var(--warn-line); background: var(--warn-bg); }
+.callout.warn::before { color: var(--warn-line); }
+html[data-lang="th"] .callout.warn::before { content: "ข้อควรระวัง"; }
+html[data-lang="en"] .callout.warn::before { content: "Watch out"; }
+.callout.link { border-color: var(--link-line); background: var(--link-bg); }
+.callout.link::before { color: var(--link-line); }
+html[data-lang="th"] .callout.link::before { content: "เชื่อมไปข้างหน้า"; }
+html[data-lang="en"] .callout.link::before { content: "Looking ahead"; }
+.callout.tip::before { color: var(--ex-line); }
+html[data-lang="th"] .callout.tip::before { content: "เคล็ดลับ"; }
+html[data-lang="en"] .callout.tip::before { content: "Tip"; }
+
+/* Lab guide layout: step list on the left, instructions on the right. */
+body { background: var(--paper); }
+.topbar { position: sticky; top: 0; z-index: 10; }
+.switches { display: flex; gap: 8px; align-items: center; }
+.switches .label { font-size: .75rem; color: var(--slide-dim); margin-right: -2px; }
+
+.lab { display: grid; grid-template-columns: 300px minmax(0, 1fr); align-items: start; }
+.steps-nav { position: sticky; top: var(--topbar-h); height: calc(100vh - var(--topbar-h)); overflow-y: auto; background: var(--paper-2); border-right: 1px solid var(--line); padding: 18px 14px; }
+.steps-nav h2 { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 6px 10px; }
+.steps-nav ol { list-style: none; margin: 0; padding: 0; }
+.steps-nav li { display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: start; padding: 7px 6px; border-radius: 8px; }
+.steps-nav li:hover { background: #fff; }
+.steps-nav input { margin-top: .32em; accent-color: var(--ex-line); width: 16px; height: 16px; }
+.steps-nav a { color: var(--text); text-decoration: none; font-size: .93rem; line-height: 1.45; }
+.steps-nav li.done a { color: var(--muted); text-decoration: line-through; }
+.lab-progress { margin: 14px 6px 0; font-size: .82rem; color: var(--muted); }
+.lab-progress .track { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin-top: 6px; }
+.lab-progress .track i { display: block; height: 100%; width: 0; background: var(--ex-line); transition: width .25s; }
+
+.lab-main { max-width: 54rem; padding: 34px 42px 90px; }
+.lab-hero { margin-bottom: 26px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+.lab-hero .kicker { font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ex-line); }
+.lab-hero h1 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.2; margin: 6px 0 8px; }
+.lab-hero .subtitle { font-size: 1.1rem; color: var(--muted); margin: 0 0 14px; line-height: 1.6; }
+.lab-hero .meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.lab-hero .meta .chip { background: var(--ink); }
+
+.step { padding: 24px 0 8px; border-bottom: 1px solid var(--line); scroll-margin-top: calc(var(--topbar-h) + 10px); }
+.step > header { display: flex; gap: 14px; align-items: baseline; margin-bottom: 10px; }
+.step .n { flex: none; width: 2.1rem; height: 2.1rem; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--accent); font-weight: 700; font-size: .95rem; }
+.step h2 { font-size: 1.35rem; line-height: 1.35; margin: 0; flex: 1; }
+.step .time { font-size: .8rem; color: var(--muted); white-space: nowrap; }
+.step .prose { padding-left: calc(2.1rem + 14px); }
+
+/* OS / IDE specific blocks */
+html[data-os="mac"] .os-win, html[data-os="win"] .os-mac,
+html[data-ide="vscode"] .ide-antigravity, html[data-ide="antigravity"] .ide-vscode { display: none !important; }
+.only { border-left: 3px solid var(--line); padding-left: 14px; margin-bottom: 1em; }
+.only::before { display: block; font-family: var(--font-ui); font-size: .72rem; font-weight: 700; letter-spacing: .08em; color: var(--muted); margin-bottom: 4px; }
+.only.os-mac::before { content: "macOS"; }
+.only.os-win::before { content: "WINDOWS"; }
+.only.ide-vscode::before { content: "VS CODE"; }
+.only.ide-antigravity::before { content: "ANTIGRAVITY"; }
+.only > :last-child { margin-bottom: 0; }
+
+.copy { position: absolute; top: 8px; right: 8px; height: 26px; padding: 0 9px; border-radius: 6px; border: 1px solid #3a4666; background: #232d49; color: var(--code-fg); font-size: .72rem; font-family: var(--font-ui); opacity: .75; }
+.copy:hover { opacity: 1; }
+.prose pre { padding-right: 70px; }
+.out { background: #10151f !important; color: #b9c4d9 !important; border-left: 3px solid var(--ex-line); }
+
+@media (max-width: 900px) {
+  .lab { grid-template-columns: 1fr; }
+  .steps-nav { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+  .lab-main { padding: 24px 18px 70px; }
+  .step .prose { padding-left: 0; }
+  .topbar .title { display: none; }
+  .switches .label { display: none; }
+}
+@media print {
+  .topbar, .steps-nav, .copy { display: none; }
+  .lab { display: block; }
+}
+
+</style>
+</head>
+<body class="">
+<header class="topbar"><span class="brand">Agentic <b>AI</b></span><span class="chip">Lab 0</span><span class="title"><span lang="th">เตรียมเครื่องและเรียก LLM ครั้งแรก</span><span lang="en">Set up your machine and make your first LLM call</span></span><div class="switches"><span class="label">OS</span><div class="seg" role="group" aria-label="Operating system"><button type="button" data-set-os="mac">macOS</button><button type="button" data-set-os="win">Windows</button></div><span class="label">IDE</span><div class="seg" role="group" aria-label="Editor"><button type="button" data-set-ide="vscode">VS Code</button><button type="button" data-set-ide="antigravity">Antigravity</button></div><div class="seg" role="group" aria-label="Language"><button type="button" data-set-lang="th">ไทย</button><button type="button" data-set-lang="en">EN</button></div></div></header><div class="lab"><nav class="steps-nav"><h2><span lang="th">ขั้นตอน</span><span lang="en">Steps</span></h2><ol><li><input type="checkbox" value="editor" aria-label="done"><a href="#editor"><span lang="th">ติดตั้ง editor และ extension</span><span lang="en">Install the editor and extensions</span></a></li><li><input type="checkbox" value="uv" aria-label="done"><a href="#uv"><span lang="th">ติดตั้ง uv</span><span lang="en">Install uv</span></a></li><li><input type="checkbox" value="project" aria-label="done"><a href="#project"><span lang="th">Clone repository และสร้าง environment</span><span lang="en">Clone the repository and create the environment</span></a></li><li><input type="checkbox" value="ollama" aria-label="done"><a href="#ollama"><span lang="th">ติดตั้ง Ollama และดาวน์โหลด local model</span><span lang="en">Install Ollama and download a local model</span></a></li><li><input type="checkbox" value="api" aria-label="done"><a href="#api"><span lang="th">ขอ API key และสร้างไฟล์ .env</span><span lang="en">Get an API key and create the .env file</span></a></li><li><input type="checkbox" value="check" aria-label="done"><a href="#check"><span lang="th">ตรวจการติดตั้งด้วย check_setup.py</span><span lang="en">Verify the setup with check_setup.py</span></a></li><li><input type="checkbox" value="notebook" aria-label="done"><a href="#notebook"><span lang="th">เรียก LLM ครั้งแรกใน notebook</span><span lang="en">Make your first LLM call in a notebook</span></a></li><li><input type="checkbox" value="submit" aria-label="done"><a href="#submit"><span lang="th">สิ่งที่ต้องส่ง และการแก้ปัญหา</span><span lang="en">What to hand in, and troubleshooting</span></a></li></ol><div class="lab-progress"><span lang="th">ทำแล้ว</span><span lang="en">Done</span> <span class="n"></span><div class="track"><i></i></div></div></nav><main class="lab-main"><div class="lab-hero"><div class="kicker">Lab 0</div><h1><span lang="th">เตรียมเครื่องและเรียก LLM ครั้งแรก</span><span lang="en">Set up your machine and make your first LLM call</span></h1><p class="subtitle"><span lang="th">ติดตั้ง editor, Python environment, local model และ API key ให้พร้อมก่อน class แรก</span><span lang="en">Install an editor, a Python environment, a local model and an API key before class 1</span></p><div class="meta"><span class="chip"><span lang="th">60–90 นาที (ส่วนใหญ่คือเวลาดาวน์โหลด)</span><span lang="en">60–90 min (mostly download time)</span></span><span class="chip"><span lang="th">ทำก่อน class แรก</span><span lang="en">Complete before class 1</span></span><span class="chip"><span lang="th">พื้นที่ว่างอย่างน้อย 10 GB</span><span lang="en">At least 10 GB free disk</span></span></div></div><div class="prose"><div lang="th"><p>เมื่อจบ lab นี้ เครื่องของคุณจะเรียก LLM ผ่าน LangChain ได้สองทาง: model ที่รันในเครื่องด้วย Ollama ซึ่งเป็น <strong>ทางหลักของวิชานี้</strong> และ model ผ่าน API ที่ใช้ได้ฟรีเป็นทางสำรอง ทุก lab ใช้การตั้งค่าชุดนี้ จึงทำครั้งเดียว</p>
+<p>เลือกระบบปฏิบัติการและ editor ของคุณที่แถบด้านบน คำสั่งในหน้านี้จะเปลี่ยนตาม ติ๊กช่องด้านซ้ายเมื่อทำแต่ละขั้นเสร็จ</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>RAM ของเครื่อง</th>
+<th>Local model ที่แนะนำ</th>
+<th>หมายเหตุ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>16 GB ขึ้นไป</td>
+<td><code>qwen3.5:4b</code> (ค่าเริ่มต้นของวิชา)</td>
+<td>ดาวน์โหลด <code>qwen3.5:9b</code> เพิ่มได้ถ้าต้องการคุณภาพสูงขึ้น</td>
+</tr>
+<tr>
+<td>8 GB</td>
+<td><code>qwen3.5:4b</code></td>
+<td>ปิดโปรแกรมอื่นขณะรัน ถ้าช้ามากให้สลับไปใช้ API</td>
+</tr>
+<tr>
+<td>น้อยกว่า 8 GB</td>
+<td>ข้ามขั้น Ollama</td>
+<td>ใช้ API อย่างเดียว</td>
+</tr>
+</tbody>
+</table></div>
+<div class="callout warn">
+<p>Lab ทั้งหมดออกแบบให้ทำได้ด้วย local model เพราะใช้ได้ไม่จำกัดจำนวนครั้ง ไม่ต้องใช้อินเทอร์เน็ต และข้อมูลไม่ออกจากเครื่อง ส่วน free API จำกัดจำนวน request ต่อวัน ให้ตั้งค่าไว้เป็นทางสำรอง ถ้าเครื่องของคุณรัน local model ไม่ไหว ให้แจ้งผู้สอนก่อน class แรก</p>
+</div></div><div lang="en"><p>By the end of this lab your machine can call an LLM through LangChain in two ways: a model running locally with Ollama, which is <strong>the main route in this course</strong>, and a model behind a free API as a backup. Every lab uses this setup, so you do it once.</p>
+<p>Pick your operating system and editor in the bar at the top; the commands on this page change to match. Tick the boxes on the left as you finish each step.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Your RAM</th>
+<th>Recommended local model</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>16 GB or more</td>
+<td><code>qwen3.5:4b</code> (the course default)</td>
+<td>You can also download <code>qwen3.5:9b</code> for better quality</td>
+</tr>
+<tr>
+<td>8 GB</td>
+<td><code>qwen3.5:4b</code></td>
+<td>Close other apps while it runs. If it is very slow, switch to the API</td>
+</tr>
+<tr>
+<td>Less than 8 GB</td>
+<td>Skip the Ollama step</td>
+<td>Use the API only</td>
+</tr>
+</tbody>
+</table></div>
+<div class="callout warn">
+<p>Every lab is designed to work with the local model: it has no request limit, needs no internet, and keeps your data on your machine. Free APIs cap the number of requests per day, so set one up as a backup. If your machine cannot run the local model, tell your instructor before class 1.</p>
+</div></div></div><section class="step" id="editor"><header><span class="n">1</span><h2><span lang="th">ติดตั้ง editor และ extension</span><span lang="en">Install the editor and extensions</span></h2><span class="time"><span lang="th">10 นาที</span><span lang="en">10 min</span></span></header><div class="prose"><div lang="th"><p>ใช้ VS Code หรือ Antigravity IDE ตัวใดตัวหนึ่ง ทั้งสองใช้ extension ชุดเดียวกันและทำ lab ได้เหมือนกัน</p>
+<div class="only ide-vscode">
+<ol>
+<li>ดาวน์โหลดและติดตั้งจาก <a href="https://code.visualstudio.com/download">https://code.visualstudio.com/download</a></li>
+<li>เปิด VS Code แล้วเปิดหน้า Extensions (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>)</li>
+<li>ค้นหาและติดตั้ง extension สองตัว ผู้เผยแพร่คือ Microsoft:<ul>
+<li><strong>Python</strong> (<code>ms-python.python</code>)</li>
+<li><strong>Jupyter</strong> (<code>ms-toolsai.jupyter</code>)</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="only ide-antigravity">
+<ol>
+<li>ไปที่ <a href="https://antigravity.google/download">https://antigravity.google/download</a> แล้วเลือกดาวน์โหลด <strong>Antigravity IDE</strong> หน้านี้มีอีกโปรแกรมชื่อ Antigravity 2.0 ซึ่งเป็นแอปควบคุม agent ไม่ใช่ editor อย่าติดตั้งผิดตัว</li>
+<li>เปิดโปรแกรมแล้ว sign in ด้วย <strong>บัญชี Gmail ส่วนตัว</strong> (@gmail.com) บัญชีของมหาวิทยาลัยหรือองค์กรอาจ sign in ไม่ผ่าน</li>
+<li>เปิดหน้า Extensions (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>) แล้วติดตั้ง:<ul>
+<li><strong>Python</strong> (<code>ms-python.python</code>)</li>
+<li><strong>Jupyter</strong> (<code>ms-toolsai.jupyter</code>)</li>
+</ul>
+</li>
+</ol>
+<p>Antigravity IDE ไม่มี extension Pylance ซึ่งไม่จำเป็นสำหรับ lab ของเรา</p>
+</div>
+<div class="callout tip">
+<p>Editor ทั้งสองมี AI ช่วยเขียน code ในตัว ระหว่างทำ lab ให้ลองเขียนเองก่อน แล้วค่อยใช้ AI ตรวจหรืออธิบาย คุณจะเข้าใจการทำงานของ agent ได้ดีกว่าการให้ AI เขียนให้ทั้งหมด</p>
+</div></div><div lang="en"><p>Use either VS Code or Antigravity IDE. Both take the same extensions and work equally well for the labs.</p>
+<div class="only ide-vscode">
+<ol>
+<li>Download and install from <a href="https://code.visualstudio.com/download">https://code.visualstudio.com/download</a></li>
+<li>Open VS Code and go to Extensions (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>)</li>
+<li>Search for and install two extensions, both published by Microsoft:<ul>
+<li><strong>Python</strong> (<code>ms-python.python</code>)</li>
+<li><strong>Jupyter</strong> (<code>ms-toolsai.jupyter</code>)</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="only ide-antigravity">
+<ol>
+<li>Go to <a href="https://antigravity.google/download">https://antigravity.google/download</a> and download <strong>Antigravity IDE</strong>. The same page offers Antigravity 2.0, which is an agent control app and not an editor. Make sure you install the IDE.</li>
+<li>Open it and sign in with a <strong>personal Gmail account</strong> (@gmail.com). University or company accounts may be refused.</li>
+<li>Go to Extensions (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>) and install:<ul>
+<li><strong>Python</strong> (<code>ms-python.python</code>)</li>
+<li><strong>Jupyter</strong> (<code>ms-toolsai.jupyter</code>)</li>
+</ul>
+</li>
+</ol>
+<p>Antigravity IDE does not offer the Pylance extension. Our labs do not need it.</p>
+</div>
+<div class="callout tip">
+<p>Both editors have built-in AI coding help. In the labs, try writing the code yourself first and then use the AI to check or explain. You will understand how agents work far better than if the AI writes everything.</p>
+</div></div></div></section><section class="step" id="uv"><header><span class="n">2</span><h2><span lang="th">ติดตั้ง uv</span><span lang="en">Install uv</span></h2><span class="time"><span lang="th">5 นาที</span><span lang="en">5 min</span></span></header><div class="prose"><div lang="th"><p><code>uv</code> เป็นเครื่องมือจัดการ Python และ package มันจะดาวน์โหลด Python เวอร์ชันที่ lab ใช้ให้เอง คุณจึงไม่ต้องติดตั้ง Python แยก และไม่กระทบ Python ที่มีอยู่ในเครื่อง</p>
+<div class="only os-mac">
+<p>เปิดแอป Terminal แล้วรัน:</p>
+<pre><code class="language-bash">curl -LsSf https://astral.sh/uv/install.sh | sh
+</code></pre>
+</div>
+<div class="only os-win">
+<p>เปิด PowerShell (กด <kbd>Win</kbd> แล้วพิมพ์ <code>powershell</code>) แล้วรัน:</p>
+<pre><code class="language-powershell">powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1 | iex&quot;
+</code></pre>
+</div>
+<p><strong>ปิดหน้าต่าง terminal แล้วเปิดใหม่</strong> จากนั้นตรวจว่าติดตั้งสำเร็จ:</p>
+<pre><code class="language-bash">uv --version
+</code></pre>
+<p>ควรเห็นหมายเลขเวอร์ชัน เช่น <code>uv 0.12.x</code></p></div><div lang="en"><p><code>uv</code> manages Python and packages. It downloads the Python version the labs use by itself, so you do not need to install Python separately, and it leaves any Python already on your machine alone.</p>
+<div class="only os-mac">
+<p>Open the Terminal app and run:</p>
+<pre><code class="language-bash">curl -LsSf https://astral.sh/uv/install.sh | sh
+</code></pre>
+</div>
+<div class="only os-win">
+<p>Open PowerShell (press <kbd>Win</kbd> and type <code>powershell</code>) and run:</p>
+<pre><code class="language-powershell">powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1 | iex&quot;
+</code></pre>
+</div>
+<p><strong>Close the terminal window and open a new one</strong>, then check the install:</p>
+<pre><code class="language-bash">uv --version
+</code></pre>
+<p>You should see a version number such as <code>uv 0.12.x</code>.</p></div></div></section><section class="step" id="project"><header><span class="n">3</span><h2><span lang="th">Clone repository และสร้าง environment</span><span lang="en">Clone the repository and create the environment</span></h2><span class="time"><span lang="th">10 นาที</span><span lang="en">10 min</span></span></header><div class="prose"><div lang="th"><p>ไฟล์ของทุก lab อยู่ใน GitHub repository ของรายวิชา คุณ clone ครั้งเดียว แล้วใช้ <code>git pull</code> รับ lab ใหม่ในแต่ละสัปดาห์</p>
+<ol>
+<li>ตรวจว่ามี Git ในเครื่อง โดยรันใน terminal:</li>
+</ol>
+<pre><code class="language-bash">git --version
+</code></pre>
+<div class="only os-mac">
+<p>ถ้ายังไม่มี macOS จะขึ้นหน้าต่างถามให้ติดตั้ง Command Line Developer Tools ให้กด <strong>Install</strong> รอจนเสร็จ แล้วรันคำสั่งเดิมอีกครั้ง</p>
+</div>
+<div class="only os-win">
+<p>ถ้าขึ้นว่าไม่รู้จักคำสั่ง ให้ติดตั้งจาก <a href="https://git-scm.com/download/win">https://git-scm.com/download/win</a> โดยใช้ค่าเริ่มต้นทุกหน้า แล้วปิดและเปิด PowerShell ใหม่</p>
+</div>
+<ol start="2">
+<li>Clone repository:</li>
+</ol>
+<div class="only os-mac">
+<pre><code class="language-bash">cd ~
+git clone https://github.com/VRU-AI-SWU/agentic-ai.git
+</code></pre>
+</div>
+<div class="only os-win">
+<pre><code class="language-powershell">cd $HOME
+git clone https://github.com/VRU-AI-SWU/agentic-ai.git
+</code></pre>
+<p>ถ้าชื่อผู้ใช้ Windows ของคุณมีอักษรไทย ให้ใช้ <code>cd C:\</code> แทน <code>cd $HOME</code> และ <strong>อย่า clone ลงในโฟลเดอร์ที่ sync กับ OneDrive</strong> (เช่น Desktop หรือ Documents ของบางเครื่อง) เพราะทำให้ติดตั้ง package ช้าและผิดพลาดบ่อย</p>
+</div>
+<ol start="3">
+<li>ใน editor เลือก <strong>File &gt; Open Folder</strong> แล้วเลือกโฟลเดอร์ <code>agentic-ai</code> ที่เพิ่ง clone มา (โฟลเดอร์ที่มีไฟล์ <code>pyproject.toml</code>)</li>
+<li>เปิด terminal ใน editor ด้วยเมนู <strong>Terminal &gt; New Terminal</strong> แล้วรัน:</li>
+</ol>
+<pre><code class="language-bash">uv sync
+</code></pre>
+<p>คำสั่งนี้ดาวน์โหลด Python 3.12 และ package ทั้งหมดลงในโฟลเดอร์ <code>.venv</code> ใช้เวลา 2–5 นาทีในครั้งแรก</p>
+<ol start="5">
+<li>บอก editor ให้ใช้ environment นี้: กด <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> พิมพ์ <code>Python: Select Interpreter</code> แล้วเลือกรายการที่มีคำว่า <code>.venv</code></li>
+</ol>
+<div class="callout tip">
+<p>ตลอดทั้งวิชา เรารัน Python ด้วย <code>uv run python ...</code> คำสั่งนี้ใช้ environment ที่ถูกต้องเสมอ และเหมือนกันทั้งบน macOS และ Windows คุณไม่ต้อง activate environment เอง</p>
+</div>
+<h4>รับ lab ใหม่ในแต่ละสัปดาห์</h4>
+<p>ก่อนเข้า class ทุกครั้ง รันสองคำสั่งนี้ใน terminal ของ editor:</p>
+<pre><code class="language-bash">git pull
+uv sync
+</code></pre>
+<p>เพื่อไม่ให้ <code>git pull</code> ชนกับงานของคุณ ให้บันทึก notebook ที่คุณแก้เป็นชื่อใหม่ที่ลงท้ายด้วย <code>.mine.ipynb</code> เช่น <code>hello_llm.mine.ipynb</code> (เมนู <strong>File &gt; Save As</strong>) Git จะไม่ยุ่งกับไฟล์ชื่อแบบนี้</p></div><div lang="en"><p>The files for every lab live in the course GitHub repository. You clone it once, then use <code>git pull</code> to get each week's new lab.</p>
+<ol>
+<li>Check that Git is installed by running this in a terminal:</li>
+</ol>
+<pre><code class="language-bash">git --version
+</code></pre>
+<div class="only os-mac">
+<p>If it is missing, macOS shows a dialog offering to install the Command Line Developer Tools. Press <strong>Install</strong>, wait for it to finish, and run the command again.</p>
+</div>
+<div class="only os-win">
+<p>If the command is not recognised, install Git from <a href="https://git-scm.com/download/win">https://git-scm.com/download/win</a>, accepting the defaults on every screen, then close and reopen PowerShell.</p>
+</div>
+<ol start="2">
+<li>Clone the repository:</li>
+</ol>
+<div class="only os-mac">
+<pre><code class="language-bash">cd ~
+git clone https://github.com/VRU-AI-SWU/agentic-ai.git
+</code></pre>
+</div>
+<div class="only os-win">
+<pre><code class="language-powershell">cd $HOME
+git clone https://github.com/VRU-AI-SWU/agentic-ai.git
+</code></pre>
+<p>If your Windows user name contains Thai characters, use <code>cd C:\</code> in place of <code>cd $HOME</code>. <strong>Do not clone into a folder synced by OneDrive</strong> (on some machines that includes Desktop and Documents), which makes package installs slow and error-prone.</p>
+</div>
+<ol start="3">
+<li>In the editor choose <strong>File &gt; Open Folder</strong> and select the <code>agentic-ai</code> folder you just cloned (the one containing <code>pyproject.toml</code>).</li>
+<li>Open a terminal inside the editor with <strong>Terminal &gt; New Terminal</strong> and run:</li>
+</ol>
+<pre><code class="language-bash">uv sync
+</code></pre>
+<p>This downloads Python 3.12 and all packages into a <code>.venv</code> folder. It takes 2–5 minutes the first time.</p>
+<ol start="5">
+<li>Tell the editor to use this environment: press <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>, type <code>Python: Select Interpreter</code>, and choose the entry that mentions <code>.venv</code>.</li>
+</ol>
+<div class="callout tip">
+<p>Throughout the course we run Python with <code>uv run python ...</code>. It always uses the right environment and is identical on macOS and Windows. You never need to activate the environment yourself.</p>
+</div>
+<h4>Getting each week's new lab</h4>
+<p>Before every class, run these two commands in the editor's terminal:</p>
+<pre><code class="language-bash">git pull
+uv sync
+</code></pre>
+<p>To keep <code>git pull</code> from colliding with your work, save any notebook you edit under a new name ending in <code>.mine.ipynb</code>, for example <code>hello_llm.mine.ipynb</code> (<strong>File &gt; Save As</strong>). Git leaves files with that name alone.</p></div></div></section><section class="step" id="ollama"><header><span class="n">4</span><h2><span lang="th">ติดตั้ง Ollama และดาวน์โหลด local model</span><span lang="en">Install Ollama and download a local model</span></h2><span class="time"><span lang="th">15–30 นาที</span><span lang="en">15–30 min</span></span></header><div class="prose"><div lang="th"><p>Ollama รัน LLM บนเครื่องของคุณ ข้อมูลไม่ออกจากเครื่อง และใช้ได้ไม่จำกัดจำนวนครั้ง ถ้าเครื่องมี RAM น้อยกว่า 8 GB ให้ข้ามขั้นนี้</p>
+<ol>
+<li>ดาวน์โหลดและติดตั้งจาก <a href="https://ollama.com/download">https://ollama.com/download</a></li>
+</ol>
+<div class="only os-mac">
+<p>ต้องใช้ macOS 14 (Sonoma) ขึ้นไป หลังติดตั้งให้เปิดแอป Ollama จะมีไอคอนขึ้นที่ menu bar</p>
+</div>
+<div class="only os-win">
+<p>ต้องใช้ Windows 10 เวอร์ชัน 22H2 ขึ้นไป หลังติดตั้ง Ollama จะทำงานอยู่เบื้องหลัง มีไอคอนที่ system tray</p>
+</div>
+<ol start="2">
+<li>ดาวน์โหลด model ของวิชา (ขนาดราว 3.5 GB) ใน terminal:</li>
+</ol>
+<pre><code class="language-bash">ollama pull qwen3.5:4b
+</code></pre>
+<ol start="3">
+<li>ทดสอบ:</li>
+</ol>
+<pre><code class="language-bash">ollama run qwen3.5:4b &quot;สวัสดี แนะนำตัวใน 1 ประโยค&quot;
+</code></pre>
+<p>ครั้งแรกจะช้าเพราะต้องโหลด model เข้า memory ถ้าได้คำตอบกลับมาแปลว่าใช้ได้</p>
+<p>คุณจะเห็นข้อความช่วง <code>Thinking...</code> ก่อนคำตอบ เพราะ model ตัวนี้คิดเป็นขั้นตอนก่อนตอบ ซึ่งทำให้ช้าลงมาก Lab ของเราจึงปิดโหมดนี้ไว้เป็นค่าเริ่มต้น (<code>OLLAMA_THINK=false</code> ใน <code>.env</code>) และจะเปิดใช้อย่างตั้งใจใน Module 3</p>
+<h4>ทำไมเลือก model ตัวนี้</h4>
+<p>เราต้องการ model ที่ <strong>รองรับ tool calling</strong> ซึ่งจำเป็นตั้งแต่ Lab 2 ไม่ใช่ทุก model ที่ทำได้ (เช่น <code>gemma3</code> ไม่รองรับ) และต้องเล็กพอสำหรับ laptop ทั่วไป การใช้ model ตัวเดียวกันทั้งห้องทำให้เทียบผลกันได้</p>
+<h4>ทางเลือกเพิ่มเติม (ไม่บังคับ)</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>คำสั่ง</th>
+<th>ขนาด</th>
+<th>ใช้เมื่อ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ollama pull qwen3.5:9b</code></td>
+<td>ราว 7 GB</td>
+<td>เครื่องมี RAM 16 GB ขึ้นไป และต้องการคำตอบที่ดีขึ้น</td>
+</tr>
+<tr>
+<td><code>ollama pull scb10x/typhoon2.5-qwen3-4b</code></td>
+<td>ราว 2.5 GB</td>
+<td>ต้องการ model ที่ปรับมาสำหรับภาษาไทย</td>
+</tr>
+<tr>
+<td><code>ollama pull bge-m3</code></td>
+<td>1.2 GB</td>
+<td>Embedding model สำหรับ Lab 4 ดาวน์โหลดไว้ก่อนได้</td>
+</tr>
+</tbody>
+</table></div></div><div lang="en"><p>Ollama runs an LLM on your own machine. Your data never leaves it and there is no request limit. If your machine has less than 8 GB of RAM, skip this step.</p>
+<ol>
+<li>Download and install from <a href="https://ollama.com/download">https://ollama.com/download</a></li>
+</ol>
+<div class="only os-mac">
+<p>Requires macOS 14 (Sonoma) or later. After installing, open the Ollama app; an icon appears in the menu bar.</p>
+</div>
+<div class="only os-win">
+<p>Requires Windows 10 version 22H2 or later. After installing, Ollama runs in the background with an icon in the system tray.</p>
+</div>
+<ol start="2">
+<li>Download the course model (about 3.5 GB) from a terminal:</li>
+</ol>
+<pre><code class="language-bash">ollama pull qwen3.5:4b
+</code></pre>
+<ol start="3">
+<li>Test it:</li>
+</ol>
+<pre><code class="language-bash">ollama run qwen3.5:4b &quot;Hello, introduce yourself in one sentence&quot;
+</code></pre>
+<p>The first run is slow because the model has to load into memory. If you get an answer, it works.</p>
+<p>You will see a <code>Thinking...</code> section before the answer, because this model reasons step by step first, which makes it much slower. Our labs turn that off by default (<code>OLLAMA_THINK=false</code> in <code>.env</code>) and switch it on deliberately in Module 3.</p>
+<h4>Why this model</h4>
+<p>We need a model that <strong>supports tool calling</strong>, which is required from Lab 2 onwards. Not every model does (<code>gemma3</code>, for example, does not), and it has to be small enough for an ordinary laptop. Using the same model across the class lets us compare results.</p>
+<h4>Optional extras</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Size</th>
+<th>Use it when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ollama pull qwen3.5:9b</code></td>
+<td>about 7 GB</td>
+<td>You have 16 GB of RAM or more and want better answers</td>
+</tr>
+<tr>
+<td><code>ollama pull scb10x/typhoon2.5-qwen3-4b</code></td>
+<td>about 2.5 GB</td>
+<td>You want a model tuned for Thai</td>
+</tr>
+<tr>
+<td><code>ollama pull bge-m3</code></td>
+<td>1.2 GB</td>
+<td>The embedding model for Lab 4; you can download it now</td>
+</tr>
+</tbody>
+</table></div></div></div></section><section class="step" id="api"><header><span class="n">5</span><h2><span lang="th">ขอ API key และสร้างไฟล์ .env</span><span lang="en">Get an API key and create the .env file</span></h2><span class="time"><span lang="th">10 นาที</span><span lang="en">10 min</span></span></header><div class="prose"><div lang="th"><p>API เป็นทางสำรองเมื่อ local model ช้าเกินไป และให้คุณลอง model ที่ใหญ่กว่าที่ laptop รันไหว เราแนะนำ OpenRouter เป็นตัวแรก เพราะ key เดียวเข้าถึง model ฟรีได้หลายตัว</p>
+<h4>1. สร้างไฟล์ .env</h4>
+<p>ใน terminal ของ editor (อยู่ในโฟลเดอร์ <code>agentic-ai</code>):</p>
+<div class="only os-mac">
+<pre><code class="language-bash">cp .env.example .env
+</code></pre>
+</div>
+<div class="only os-win">
+<pre><code class="language-powershell">Copy-Item .env.example .env
+</code></pre>
+</div>
+<h4>2. ขอ key จาก OpenRouter</h4>
+<ol>
+<li>สมัครที่ <a href="https://openrouter.ai">https://openrouter.ai</a> ไม่ต้องใช้บัตรเครดิต</li>
+<li>ไปที่ <a href="https://openrouter.ai/keys">https://openrouter.ai/keys</a> แล้วกด <strong>Create Key</strong></li>
+<li>เปิดไฟล์ <code>.env</code> ใน editor แล้ววาง key หลัง <code>OPENROUTER_API_KEY=</code> จากนั้นบันทึกไฟล์</li>
+</ol>
+<p>ข้อจำกัดของ model ฟรี (ที่ลงท้ายด้วย <code>:free</code>): 20 request ต่อนาที และ 50 request ต่อวัน ถ้าเคยเติมเงินรวม 10 USD ขึ้นไป จะเพิ่มเป็น 1,000 request ต่อวัน</p>
+<h4>3. เพิ่ม provider อีกตัว (ไม่บังคับ)</h4>
+<p>Agent หนึ่งงานใช้หลาย request โควตา 50 ครั้งต่อวันจึงหมดเร็ว ถ้าคุณต้องพึ่ง API บ่อย ให้มีอีกหนึ่ง provider ไว้สลับ:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>ขอ key ที่</th>
+<th>ตัวแปรใน <code>.env</code></th>
+<th>ข้อจำกัดของ free tier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Groq</td>
+<td><a href="https://console.groq.com/keys">https://console.groq.com/keys</a></td>
+<td><code>GROQ_API_KEY</code></td>
+<td>30 request ต่อนาที, 1,000 ต่อวัน, 8,000 token ต่อนาที</td>
+</tr>
+<tr>
+<td>Google AI Studio</td>
+<td><a href="https://aistudio.google.com/apikey">https://aistudio.google.com/apikey</a></td>
+<td><code>GOOGLE_API_KEY</code></td>
+<td>ดูตัวเลขปัจจุบันในหน้า rate limit ของ AI Studio</td>
+</tr>
+</tbody>
+</table></div>
+<h4>4. เลือก provider เริ่มต้น</h4>
+<p>บรรทัด <code>LLM_PROVIDER=</code> ใน <code>.env</code> กำหนดว่า lab จะใช้ตัวไหน ค่าที่ใช้ได้คือ <code>ollama</code>, <code>openrouter</code>, <code>groq</code>, <code>google</code> เริ่มต้นเป็น <code>ollama</code></p>
+<div class="callout warn">
+<ul>
+<li><strong>API key เปรียบเหมือนรหัสผ่าน</strong> อย่าส่งให้ใคร อย่าวางในแชต และอย่าใส่ในไฟล์ code ให้เก็บไว้ใน <code>.env</code> เท่านั้น</li>
+<li><strong>ข้อมูลที่ส่งไป free API อาจถูกนำไปใช้ปรับปรุง model</strong> ห้ามส่งเอกสารจริงขององค์กรหรือข้อมูลส่วนบุคคล ถ้าต้องทดลองกับเอกสารจริงให้ใช้ Ollama</li>
+</ul>
+</div></div><div lang="en"><p>An API is the backup for when the local model is too slow, and it lets you try models bigger than a laptop can run. We suggest OpenRouter first, because one key reaches several free models.</p>
+<h4>1. Create the .env file</h4>
+<p>In the editor's terminal (inside the <code>agentic-ai</code> folder):</p>
+<div class="only os-mac">
+<pre><code class="language-bash">cp .env.example .env
+</code></pre>
+</div>
+<div class="only os-win">
+<pre><code class="language-powershell">Copy-Item .env.example .env
+</code></pre>
+</div>
+<h4>2. Get an OpenRouter key</h4>
+<ol>
+<li>Sign up at <a href="https://openrouter.ai">https://openrouter.ai</a>. No credit card is needed.</li>
+<li>Go to <a href="https://openrouter.ai/keys">https://openrouter.ai/keys</a> and press <strong>Create Key</strong>.</li>
+<li>Open <code>.env</code> in the editor, paste the key after <code>OPENROUTER_API_KEY=</code>, and save the file.</li>
+</ol>
+<p>Limits for free models (those ending in <code>:free</code>): 20 requests per minute and 50 requests per day. If you have ever bought 10 USD of credit or more, that rises to 1,000 requests per day.</p>
+<h4>3. Add another provider (optional)</h4>
+<p>One agent task uses many requests, so 50 a day runs out quickly. If you rely on the API often, have one more provider to switch to:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Get a key at</th>
+<th>Variable in <code>.env</code></th>
+<th>Free-tier limits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Groq</td>
+<td><a href="https://console.groq.com/keys">https://console.groq.com/keys</a></td>
+<td><code>GROQ_API_KEY</code></td>
+<td>30 requests per minute, 1,000 per day, 8,000 tokens per minute</td>
+</tr>
+<tr>
+<td>Google AI Studio</td>
+<td><a href="https://aistudio.google.com/apikey">https://aistudio.google.com/apikey</a></td>
+<td><code>GOOGLE_API_KEY</code></td>
+<td>See the current numbers on AI Studio's rate limit page</td>
+</tr>
+</tbody>
+</table></div>
+<h4>4. Choose the default provider</h4>
+<p>The <code>LLM_PROVIDER=</code> line in <code>.env</code> decides which one the labs use. Valid values are <code>ollama</code>, <code>openrouter</code>, <code>groq</code>, <code>google</code>. It starts as <code>ollama</code>.</p>
+<div class="callout warn">
+<ul>
+<li><strong>An API key is like a password.</strong> Do not send it to anyone, paste it in a chat, or put it in a code file. Keep it in <code>.env</code> only.</li>
+<li><strong>Data sent to a free API may be used to improve the model.</strong> Never send real company documents or personal data. If you need to experiment with real documents, use Ollama.</li>
+</ul>
+</div></div></div></section><section class="step" id="check"><header><span class="n">6</span><h2><span lang="th">ตรวจการติดตั้งด้วย check_setup.py</span><span lang="en">Verify the setup with check_setup.py</span></h2><span class="time"><span lang="th">5 นาที</span><span lang="en">5 min</span></span></header><div class="prose"><div lang="th"><p>รัน script ตรวจสอบจากโฟลเดอร์ <code>agentic-ai</code>:</p>
+<pre><code class="language-bash">uv run python lab-00-setup/check_setup.py
+</code></pre>
+<p>Script จะตรวจ Python, package, ไฟล์ <code>.env</code>, Ollama และทุก API ที่คุณใส่ key ไว้ โดยลองเรียก LLM จริงทีละตัว ผลที่ต้องการคือบรรทัดสุดท้ายขึ้นว่า:</p>
+<pre><code class="language-text">READY - working LLM providers: ollama, openrouter
+</code></pre>
+<p>ความหมายของแต่ละสถานะ:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>สถานะ</th>
+<th>ความหมาย</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[ OK ]</code></td>
+<td>ผ่าน</td>
+</tr>
+<tr>
+<td><code>[SKIP]</code></td>
+<td>ข้าม เพราะยังไม่ได้ใส่ key ของ provider นั้น</td>
+</tr>
+<tr>
+<td><code>[WARN]</code></td>
+<td>ใช้งานได้ แต่ควรอ่านข้อความ</td>
+</tr>
+<tr>
+<td><code>[FAIL]</code></td>
+<td>ต้องแก้ ข้อความบอกวิธีแก้ไว้ และดูตารางแก้ปัญหาในขั้นสุดท้าย</td>
+</tr>
+</tbody>
+</table></div></div><div lang="en"><p>Run the checker from the <code>agentic-ai</code> folder:</p>
+<pre><code class="language-bash">uv run python lab-00-setup/check_setup.py
+</code></pre>
+<p>It checks Python, the packages, your <code>.env</code> file, Ollama, and every API you have a key for, making a real LLM call to each. What you want is a last line that reads:</p>
+<pre><code class="language-text">READY - working LLM providers: ollama, openrouter
+</code></pre>
+<p>What each status means:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[ OK ]</code></td>
+<td>Passed</td>
+</tr>
+<tr>
+<td><code>[SKIP]</code></td>
+<td>Skipped because you have not entered a key for that provider</td>
+</tr>
+<tr>
+<td><code>[WARN]</code></td>
+<td>Works, but read the message</td>
+</tr>
+<tr>
+<td><code>[FAIL]</code></td>
+<td>Needs fixing. The message says how; see also the troubleshooting table in the last step</td>
+</tr>
+</tbody>
+</table></div></div></div></section><section class="step" id="notebook"><header><span class="n">7</span><h2><span lang="th">เรียก LLM ครั้งแรกใน notebook</span><span lang="en">Make your first LLM call in a notebook</span></h2><span class="time"><span lang="th">15–20 นาที</span><span lang="en">15–20 min</span></span></header><div class="prose"><div lang="th"><ol>
+<li>ใน editor เปิดไฟล์ <code>lab-00-setup/hello_llm.th.ipynb</code> (ฉบับภาษาอังกฤษคือ <code>hello_llm.en.ipynb</code> code เหมือนกันทุกบรรทัด)</li>
+<li>กด <strong>Select Kernel</strong> ที่มุมขวาบนของ notebook เลือก <strong>Python Environments</strong> แล้วเลือกรายการที่มีคำว่า <code>.venv</code></li>
+<li>รันทีละ cell ด้วย <kbd>Shift</kbd>+<kbd>Enter</kbd> และอ่านคำอธิบายก่อนแต่ละ cell</li>
+</ol>
+<p>Notebook พาคุณทดลองสิ่งที่เรียนใน Module 0: message และ role, streaming, temperature, จำนวน token ของภาษาไทยเทียบกับอังกฤษ และ structured output จากข้อความ invoice</p>
+<ol start="4">
+<li>ทำแบบฝึกหัด 3 ข้อท้าย notebook ก่อนแก้ code ให้บันทึกเป็น <code>hello_llm.mine.ipynb</code></li>
+</ol></div><div lang="en"><ol>
+<li>In the editor open <code>lab-00-setup/hello_llm.en.ipynb</code> (the Thai version is <code>hello_llm.th.ipynb</code>; the code is identical line for line).</li>
+<li>Press <strong>Select Kernel</strong> at the top right of the notebook, choose <strong>Python Environments</strong>, then the entry that mentions <code>.venv</code>.</li>
+<li>Run one cell at a time with <kbd>Shift</kbd>+<kbd>Enter</kbd>, reading the explanation before each cell.</li>
+</ol>
+<p>The notebook lets you try what you learned in Module 0: messages and roles, streaming, temperature, Thai versus English token counts, and structured output from an invoice.</p>
+<ol start="4">
+<li>Do the 3 exercises at the end of the notebook. Before editing code, save it as <code>hello_llm.mine.ipynb</code>.</li>
+</ol></div></div></section><section class="step" id="submit"><header><span class="n">8</span><h2><span lang="th">สิ่งที่ต้องส่ง และการแก้ปัญหา</span><span lang="en">What to hand in, and troubleshooting</span></h2><span class="time"><span lang="th">5 นาที</span><span lang="en">5 min</span></span></header><div class="prose"><div lang="th"><h4>ส่งใน Moodle ก่อน class แรก</h4>
+<ol>
+<li>ภาพหน้าจอของผลลัพธ์ <code>check_setup.py</code> ที่เห็นบรรทัด <code>READY</code> <strong>ตรวจให้แน่ใจว่าไม่มี API key อยู่ในภาพ</strong> (script ไม่พิมพ์ key ออกมา)</li>
+<li>คำตอบของแบบฝึกหัดข้อ 3 ใน notebook: model ตอบอย่างไรเมื่อยอดรวมใน invoice ไม่ตรงกับผลบวกของรายการ เขียน 2–3 ประโยค</li>
+</ol>
+<h4>ปัญหาที่พบบ่อย</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>อาการ</th>
+<th>วิธีแก้</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uv: command not found</code> หรือ <code>uv is not recognized</code></td>
+<td>ปิด terminal แล้วเปิดใหม่ ถ้ายังไม่ได้ให้ติดตั้ง uv ซ้ำ</td>
+</tr>
+<tr>
+<td><code>git: command not found</code> หรือ <code>git is not recognized</code></td>
+<td>ติดตั้ง Git ตามขั้นที่ 3 แล้วเปิด terminal ใหม่</td>
+</tr>
+<tr>
+<td><code>uv sync</code> ช้ามากหรือค้างบน Windows</td>
+<td>โฟลเดอร์อยู่ใน OneDrive ให้ลบแล้ว clone ใหม่ที่ <code>C:\agentic-ai</code></td>
+</tr>
+<tr>
+<td><code>git pull</code> แจ้งว่าไฟล์ที่คุณแก้จะถูกเขียนทับ</td>
+<td>บันทึกไฟล์นั้นเป็นชื่อ <code>.mine.ipynb</code> แล้วรัน <code>git checkout -- .</code> ตามด้วย <code>git pull</code></td>
+</tr>
+<tr>
+<td><code>[FAIL] Ollama server - not reachable</code></td>
+<td>เปิดแอป Ollama แล้วรัน script ใหม่</td>
+</tr>
+<tr>
+<td><code>[FAIL] Ollama model - ... is not downloaded</code></td>
+<td>รัน <code>ollama pull qwen3.5:4b</code></td>
+</tr>
+<tr>
+<td>Ollama ตอบช้ามาก หรือเครื่องค้าง</td>
+<td>ปิดโปรแกรมอื่น หรือตั้ง <code>LLM_PROVIDER=openrouter</code> ใน <code>.env</code></td>
+</tr>
+<tr>
+<td><code>... API_KEY is empty</code></td>
+<td>วาง key ใน <code>.env</code> แล้ว <strong>บันทึกไฟล์</strong> ตรวจว่าไฟล์ชื่อ <code>.env</code> ไม่ใช่ <code>.env.txt</code></td>
+</tr>
+<tr>
+<td><code>401</code> หรือ <code>Unauthorized</code></td>
+<td>Key ผิดหรือคัดลอกมาไม่ครบ สร้าง key ใหม่แล้ววางอีกครั้ง</td>
+</tr>
+<tr>
+<td><code>429</code> หรือ <code>rate limit</code></td>
+<td>ใช้เกินโควตา รอสักครู่ หรือสลับ <code>LLM_PROVIDER</code> เป็นตัวอื่น</td>
+</tr>
+<tr>
+<td><code>No endpoints found matching your data policy</code></td>
+<td>เปิด <a href="https://openrouter.ai/settings/privacy">https://openrouter.ai/settings/privacy</a> แล้วอนุญาตการใช้ free endpoint</td>
+</tr>
+<tr>
+<td><code>[FAIL] OpenRouter model - ... is not listed any more</code></td>
+<td>รายการ model ฟรีเปลี่ยนบ่อย รัน <code>git pull</code> แล้วคัดลอกค่า <code>OPENROUTER_MODEL</code> จาก <code>.env.example</code> มาใส่ใน <code>.env</code></td>
+</tr>
+<tr>
+<td>Notebook ไม่เห็น <code>.venv</code> ในรายการ kernel</td>
+<td>ตรวจว่าเปิดโฟลเดอร์ <code>agentic-ai</code> (โฟลเดอร์ที่มี <code>pyproject.toml</code>) และรัน <code>uv sync</code> แล้ว จากนั้น reload หน้าต่าง editor</td>
+</tr>
+<tr>
+<td><code>ModuleNotFoundError: agentlab</code></td>
+<td>Kernel ไม่ใช่ <code>.venv</code> เลือก kernel ใหม่ตามขั้นที่แล้ว</td>
+</tr>
+</tbody>
+</table></div>
+<p>ถ้าแก้ไม่ได้ ให้โพสต์ข้อความ error (ไม่ใช่ภาพถ่ายหน้าจอจากมือถือ) ในกระดานถามตอบของรายวิชา และอย่าลืมลบ API key ออกจากข้อความก่อนโพสต์</p></div><div lang="en"><h4>Hand in on Moodle before class 1</h4>
+<ol>
+<li>A screenshot of the <code>check_setup.py</code> output showing the <code>READY</code> line. <strong>Make sure no API key is visible</strong> (the script never prints keys).</li>
+<li>Your answer to exercise 3 in the notebook: how did the model respond when the invoice total did not match the sum of the items? Write 2–3 sentences.</li>
+</ol>
+<h4>Common problems</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uv: command not found</code> or <code>uv is not recognized</code></td>
+<td>Close the terminal and open a new one. If it still fails, install uv again</td>
+</tr>
+<tr>
+<td><code>git: command not found</code> or <code>git is not recognized</code></td>
+<td>Install Git as in step 3, then open a new terminal</td>
+</tr>
+<tr>
+<td><code>uv sync</code> is very slow or hangs on Windows</td>
+<td>The folder is inside OneDrive. Delete it and clone again at <code>C:\agentic-ai</code></td>
+</tr>
+<tr>
+<td><code>git pull</code> says your local changes would be overwritten</td>
+<td>Save that file under a <code>.mine.ipynb</code> name, then run <code>git checkout -- .</code> followed by <code>git pull</code></td>
+</tr>
+<tr>
+<td><code>[FAIL] Ollama server - not reachable</code></td>
+<td>Open the Ollama app and run the script again</td>
+</tr>
+<tr>
+<td><code>[FAIL] Ollama model - ... is not downloaded</code></td>
+<td>Run <code>ollama pull qwen3.5:4b</code></td>
+</tr>
+<tr>
+<td>Ollama is very slow, or the machine freezes</td>
+<td>Close other apps, or set <code>LLM_PROVIDER=openrouter</code> in <code>.env</code></td>
+</tr>
+<tr>
+<td><code>... API_KEY is empty</code></td>
+<td>Paste the key into <code>.env</code> and <strong>save the file</strong>. Check the file is named <code>.env</code>, not <code>.env.txt</code></td>
+</tr>
+<tr>
+<td><code>401</code> or <code>Unauthorized</code></td>
+<td>The key is wrong or was copied incompletely. Create a new key and paste it again</td>
+</tr>
+<tr>
+<td><code>429</code> or <code>rate limit</code></td>
+<td>You are over quota. Wait a while, or switch <code>LLM_PROVIDER</code> to another provider</td>
+</tr>
+<tr>
+<td><code>No endpoints found matching your data policy</code></td>
+<td>Open <a href="https://openrouter.ai/settings/privacy">https://openrouter.ai/settings/privacy</a> and allow free endpoints</td>
+</tr>
+<tr>
+<td><code>[FAIL] OpenRouter model - ... is not listed any more</code></td>
+<td>The free model list changes often. Run <code>git pull</code>, then copy the <code>OPENROUTER_MODEL</code> value from <code>.env.example</code> into your <code>.env</code></td>
+</tr>
+<tr>
+<td>The notebook does not list <code>.venv</code> as a kernel</td>
+<td>Check that you opened the <code>agentic-ai</code> folder (the one containing <code>pyproject.toml</code>) and ran <code>uv sync</code>, then reload the editor window</td>
+</tr>
+<tr>
+<td><code>ModuleNotFoundError: agentlab</code></td>
+<td>The kernel is not <code>.venv</code>. Select the kernel again as in the previous step</td>
+</tr>
+</tbody>
+</table></div>
+<p>If you are stuck, post the error text (not a phone photo of the screen) on the course forum, and remove any API key from it before posting.</p></div></div></section></main></div>
+<script>window.COURSE = {"id": "lab-00", "title": {"th": "เตรียมเครื่องและเรียก LLM ครั้งแรก", "en": "Set up your machine and make your first LLM call"}, "defaultLang": "th", "passMark": 60};</script>
+<script>
+/* Lab guide runtime: language / OS / IDE switches, copy buttons, step checklist. */
+(function () {
+  "use strict";
+  var META = window.COURSE || {};
+  var root = document.documentElement;
+  var KEY = "agentic-ai:" + (META.id || "lab");
+  var $$ = function (sel, el) { return Array.prototype.slice.call((el || document).querySelectorAll(sel)); };
+
+  var state = { l: META.defaultLang || "th", os: /Win/i.test(navigator.platform || navigator.userAgent) ? "win" : "mac", ide: "vscode", done: {} };
+  try {
+    var saved = JSON.parse(window.localStorage.getItem(KEY) || "null");
+    if (saved && typeof saved === "object") { for (var k in saved) state[k] = saved[k]; }
+  } catch (e) { /* storage unavailable or corrupt */ }
+  var p = new URLSearchParams(window.location.search).get("lang");
+  if (p === "th" || p === "en") state.l = p;
+
+  function save() { try { window.localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignore */ } }
+
+  function paint() {
+    root.setAttribute("data-lang", state.l);
+    root.setAttribute("lang", state.l);
+    root.setAttribute("data-os", state.os);
+    root.setAttribute("data-ide", state.ide);
+    $$("[data-set-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-set-lang") === state.l)); });
+    $$("[data-set-os]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-set-os") === state.os)); });
+    $$("[data-set-ide]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-set-ide") === state.ide)); });
+    if (META.title && META.title[state.l]) document.title = META.title[state.l];
+    var boxes = $$(".steps-nav input"), n = 0;
+    boxes.forEach(function (b) {
+      var on = !!state.done[b.value];
+      b.checked = on; if (on) n++;
+      b.parentNode.classList.toggle("done", on);
+    });
+    var bar = document.querySelector(".lab-progress .track i");
+    if (bar) bar.style.width = (boxes.length ? Math.round((n / boxes.length) * 100) : 0) + "%";
+    var cnt = document.querySelector(".lab-progress .n");
+    if (cnt) cnt.textContent = n + " / " + boxes.length;
+  }
+
+  ["lang", "os", "ide"].forEach(function (kind) {
+    $$("[data-set-" + kind + "]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        state[kind === "lang" ? "l" : kind] = b.getAttribute("data-set-" + kind);
+        save(); paint();
+      });
+    });
+  });
+  $$(".steps-nav input").forEach(function (b) {
+    b.addEventListener("change", function () { state.done[b.value] = b.checked; save(); paint(); });
+  });
+
+  $$(".prose pre").forEach(function (pre) {
+    if (pre.classList.contains("out")) return;
+    var btn = document.createElement("button");
+    btn.className = "copy"; btn.type = "button"; btn.textContent = "Copy";
+    btn.addEventListener("click", function () {
+      var text = (pre.querySelector("code") || pre).innerText;
+      var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy"; }, 1400); };
+      if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(done, function () {}); }
+      else {
+        var ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); done(); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+    });
+    pre.appendChild(btn);
+  });
+
+  paint();
+})();
+
+</script>
+</body>
+</html>
