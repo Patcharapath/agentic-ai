@@ -1,0 +1,12 @@
+PURCHASE ORDER
+PO Number: PO-7781                 Date: 3 October 2026
+Buyer: Srinakharinwirot University, Faculty of Science
+Supplier: Bangkok Cloud Co., Ltd.
+
+Item                              Qty    Unit price      Amount
+GPU cloud credits (monthly)        3      12,000.00    36,000.00
+Total                                                  36,000.00 THB
+
+Please deliver the service by 15 October 2026 and send your invoice
+quoting this PO number.
+Authorised by: Head of Procurement

@@ -1,0 +1,9 @@
+Netcare Co., Ltd. / บริษัท เน็ตแคร์ จำกัด
+INVOICE / ใบแจ้งหนี้
+No. / เลขที่: INV-2026-0057        Date / วันที่: 9 October 2026
+
+Customer / ลูกค้า: DataWork Co., Ltd.
+Service / บริการ: Network maintenance, October 2026 / ค่าดูแลระบบเครือข่าย
+Amount / จำนวนเงิน                 45,000.00
+VAT 7% / ภาษีมูลค่าเพิ่ม              3,150.00
+Total / รวมทั้งสิ้น                  48,150.00 THB

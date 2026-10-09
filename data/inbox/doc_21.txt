@@ -1,0 +1,9 @@
+QuickRide
+E-RECEIPT
+Trip ID QR-20261014-7731           14 October 2026, 08:42
+
+From: Asok Montri Road    To: Don Mueang Airport
+Fare               420.00
+Tollway             70.00
+Total paid         490.00 THB
+Paid with card ending 4421. Thank you for riding with us.

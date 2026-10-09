@@ -8,3 +8,6 @@ __pycache__/
 
 # Instructor sources for the generated guides and notebooks
 lab-*/src/
+
+# Released by the instructor after each class
+*.solution.ipynb

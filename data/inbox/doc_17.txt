@@ -1,0 +1,7 @@
+MEETING MINUTES
+Data Team weekly sync, 12 October 2026
+
+Attendees: Pimchanok, Thanakorn, Krit
+1. The dashboard migration is on track for the end of the month.
+2. Krit will document the new data pipeline.
+3. Next meeting: 19 October 2026, 10:00.

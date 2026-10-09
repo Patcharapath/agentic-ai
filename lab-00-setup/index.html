@@ -91,7 +91,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
   border-radius: 5px; padding: .05em .4em; background: #fff;
 }
 .prose table { border-collapse: collapse; width: 100%; margin: 0 0 1em; font-size: .94rem; line-height: 1.55; }
-.prose th, .prose td { border: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; }
+.prose th, .prose td { border: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; overflow-wrap: break-word; }
 .prose th { background: var(--paper-2); font-family: var(--font-ui); font-weight: 600; }
 .table-wrap { overflow-x: auto; }
 
@@ -181,6 +181,11 @@ html[data-ide="vscode"] .ide-antigravity, html[data-ide="antigravity"] .ide-vsco
   .topbar, .steps-nav, .copy { display: none; }
   .lab { display: block; }
 }
+
+/* Fill-in forms on activity pages */
+.canvas { width: 100%; }
+.canvas th small { display: block; font-weight: 400; color: var(--muted); line-height: 1.4; margin-top: 2px; }
+.canvas td { background: #fff; }
 
 </style>
 </head>

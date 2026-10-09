@@ -1,0 +1,14 @@
+Bangkok Cloud Co., Ltd.
+88 Sukhumvit Road, Bangkok 10110      Tax ID 0105559876543
+
+TAX INVOICE
+No. TI-55012                       Date: 5 October 2026
+Bill to: DataWork Co., Ltd.
+Reference: PO-7781
+
+Description                        Qty    Unit price      Amount
+GPU cloud credits (October)         1      12,000.00    12,000.00
+VAT 7%                                                     840.00
+Total due                                               12,840.00 THB
+
+Payment terms: 30 days from invoice date.

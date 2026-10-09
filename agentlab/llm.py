@@ -10,7 +10,10 @@ Settings come from the ``.env`` file next to ``pyproject.toml`` (copy ``.env.exa
 """
 from __future__ import annotations
 
+import json
 import os
+import urllib.error
+import urllib.request
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -51,6 +54,8 @@ def get_llm(provider: str | None = None, model: str | None = None, temperature: 
         from langchain_ollama import ChatOllama
 
         kwargs.setdefault("num_ctx", int(os.getenv("OLLAMA_NUM_CTX") or 8192))
+        # Cap the answer length so a model that fails to stop cannot hang a notebook.
+        kwargs.setdefault("num_predict", int(os.getenv("OLLAMA_NUM_PREDICT") or 1024))
         # Thinking is off unless asked for: a small local model can spend minutes
         # reasoning before a one-line answer. Module 3 turns it on deliberately.
         think = (os.getenv("OLLAMA_THINK") or "false").strip().lower()
@@ -70,3 +75,24 @@ def get_llm(provider: str | None = None, model: str | None = None, temperature: 
     from langchain_google_genai import ChatGoogleGenerativeAI
 
     return ChatGoogleGenerativeAI(model=model, temperature=temperature, **kwargs)
+
+
+def release_model() -> list[str]:
+    """Unload local models from RAM and return the names that were unloaded.
+
+    Ollama keeps a model loaded between calls, and the RAM it holds grows as it
+    is called with new prompts. Unloading gives all of that back; the next call
+    reloads the model, which takes a few seconds. Does nothing when Ollama is
+    not running or no model is loaded.
+    """
+    base = (os.getenv("OLLAMA_BASE_URL") or "http://localhost:11434").rstrip("/")
+    try:
+        with urllib.request.urlopen(f"{base}/api/ps", timeout=3) as response:
+            loaded = [m["name"] for m in json.loads(response.read()).get("models", [])]
+        for name in loaded:
+            body = json.dumps({"model": name, "keep_alive": 0}).encode()
+            request = urllib.request.Request(f"{base}/api/generate", data=body, headers={"Content-Type": "application/json"})
+            urllib.request.urlopen(request, timeout=30).read()
+        return loaded
+    except (urllib.error.URLError, OSError, ValueError):
+        return []

@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="th" data-lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent สี่แบบใน environment เดียวกัน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600&display=swap">
+<style>
+/* Shared tokens, language switching and reading typography for all course pages. */
+:root {
+  --ink: #0d1526;
+  --ink-2: #16213a;
+  --ink-3: #22304f;
+  --slide-fg: #eaf0ff;
+  --slide-dim: #9fb0d0;
+  --accent: #f6b93b;
+  --accent-2: #4fd1c5;
+  --paper: #fbf9f4;
+  --paper-2: #f3efe5;
+  --text: #1e2330;
+  --muted: #5d6577;
+  --line: #e2dccd;
+  --ex-bg: #e9f5f2;
+  --ex-line: #23897c;
+  --warn-bg: #fdf1dc;
+  --warn-line: #c9820a;
+  --link-bg: #ecf0fb;
+  --link-line: #4a63c4;
+  --code-bg: #182036;
+  --code-fg: #dbe6ff;
+  --ok: #1f9d6b;
+  --bad: #d24b4b;
+  --font-ui: "IBM Plex Sans Thai", "Noto Sans Thai", "Leelawadee UI", "Thonburi", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-read: "IBM Plex Sans Thai Looped", "IBM Plex Sans Thai", "Noto Sans Thai Looped", "Leelawadee UI", "Thonburi", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --topbar-h: 52px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { font-family: var(--font-ui); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+/* Language switching: every translated node carries lang="th" or lang="en". */
+html[data-lang="th"] body [lang="en"],
+html[data-lang="en"] body [lang="th"] { display: none !important; }
+
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Top bar (dark, shared by modules and labs) */
+.topbar {
+  height: var(--topbar-h); display: flex; align-items: center; gap: 12px;
+  padding: 0 14px; background: var(--ink); color: var(--slide-fg);
+  border-bottom: 1px solid var(--ink-3);
+}
+.brand { font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.brand b { color: var(--accent); font-weight: 700; }
+.chip {
+  font-size: .78rem; font-weight: 600; padding: 3px 9px; border-radius: 999px;
+  background: var(--ink-3); color: var(--slide-fg); white-space: nowrap;
+}
+.topbar .title { flex: 1; min-width: 0; font-size: .95rem; color: var(--slide-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tb-btn {
+  height: 34px; min-width: 34px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--ink-3);
+  background: transparent; color: var(--slide-fg); font-size: .85rem; white-space: nowrap;
+}
+.tb-btn:hover { background: var(--ink-2); }
+.seg { display: inline-flex; border: 1px solid var(--ink-3); border-radius: 8px; overflow: hidden; }
+.seg button { height: 32px; padding: 0 11px; border: 0; background: transparent; color: var(--slide-dim); font-size: .85rem; font-weight: 600; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: #231a04; }
+
+/* Reading typography (notes pane, lab guide body) */
+.prose { font-family: var(--font-read); font-size: 1.02rem; line-height: 1.8; overflow-wrap: anywhere; }
+.prose p { margin: 0 0 .8em; }
+.prose ul, .prose ol { margin: 0 0 .9em; padding-left: 1.4em; }
+.prose li { margin: .2em 0; }
+.prose h4 { font-family: var(--font-ui); font-size: 1rem; margin: 1.2em 0 .4em; }
+.prose a { color: var(--link-line); }
+.prose strong { font-weight: 600; }
+.prose code {
+  font-family: var(--font-mono); font-size: .88em; background: var(--paper-2);
+  border: 1px solid var(--line); border-radius: 4px; padding: .08em .35em;
+}
+.prose pre {
+  position: relative; background: var(--code-bg); color: var(--code-fg); border-radius: 8px;
+  padding: 14px 16px; overflow-x: auto; line-height: 1.55; margin: 0 0 1em;
+}
+.prose pre code { background: none; border: 0; padding: 0; color: inherit; font-size: .86rem; white-space: pre; }
+.prose kbd {
+  font-family: var(--font-mono); font-size: .82em; border: 1px solid #c9c2b0; border-bottom-width: 2px;
+  border-radius: 5px; padding: .05em .4em; background: #fff;
+}
+.prose table { border-collapse: collapse; width: 100%; margin: 0 0 1em; font-size: .94rem; line-height: 1.55; }
+.prose th, .prose td { border: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; overflow-wrap: break-word; }
+.prose th { background: var(--paper-2); font-family: var(--font-ui); font-weight: 600; }
+.table-wrap { overflow-x: auto; }
+
+/* Callouts. A Markdown blockquote is an example box. */
+.prose blockquote, .callout {
+  margin: 0 0 1em; padding: 10px 14px 10px 16px; border-left: 4px solid var(--ex-line);
+  background: var(--ex-bg); border-radius: 0 8px 8px 0;
+}
+.prose blockquote > :last-child, .callout > :last-child { margin-bottom: 0; }
+.prose blockquote::before, .callout::before {
+  display: block; font-family: var(--font-ui); font-size: .74rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--ex-line); margin-bottom: 2px;
+}
+html[data-lang="th"] .prose blockquote::before { content: "ตัวอย่าง"; }
+html[data-lang="en"] .prose blockquote::before { content: "Example"; }
+.callout.warn { border-color: var(--warn-line); background: var(--warn-bg); }
+.callout.warn::before { color: var(--warn-line); }
+html[data-lang="th"] .callout.warn::before { content: "ข้อควรระวัง"; }
+html[data-lang="en"] .callout.warn::before { content: "Watch out"; }
+.callout.link { border-color: var(--link-line); background: var(--link-bg); }
+.callout.link::before { color: var(--link-line); }
+html[data-lang="th"] .callout.link::before { content: "เชื่อมไปข้างหน้า"; }
+html[data-lang="en"] .callout.link::before { content: "Looking ahead"; }
+.callout.tip::before { color: var(--ex-line); }
+html[data-lang="th"] .callout.tip::before { content: "เคล็ดลับ"; }
+html[data-lang="en"] .callout.tip::before { content: "Tip"; }
+
+/* Lab guide layout: step list on the left, instructions on the right. */
+body { background: var(--paper); }
+.topbar { position: sticky; top: 0; z-index: 10; }
+.switches { display: flex; gap: 8px; align-items: center; }
+.switches .label { font-size: .75rem; color: var(--slide-dim); margin-right: -2px; }
+
+.lab { display: grid; grid-template-columns: 300px minmax(0, 1fr); align-items: start; }
+.steps-nav { position: sticky; top: var(--topbar-h); height: calc(100vh - var(--topbar-h)); overflow-y: auto; background: var(--paper-2); border-right: 1px solid var(--line); padding: 18px 14px; }
+.steps-nav h2 { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 6px 10px; }
+.steps-nav ol { list-style: none; margin: 0; padding: 0; }
+.steps-nav li { display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: start; padding: 7px 6px; border-radius: 8px; }
+.steps-nav li:hover { background: #fff; }
+.steps-nav input { margin-top: .32em; accent-color: var(--ex-line); width: 16px; height: 16px; }
+.steps-nav a { color: var(--text); text-decoration: none; font-size: .93rem; line-height: 1.45; }
+.steps-nav li.done a { color: var(--muted); text-decoration: line-through; }
+.lab-progress { margin: 14px 6px 0; font-size: .82rem; color: var(--muted); }
+.lab-progress .track { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin-top: 6px; }
+.lab-progress .track i { display: block; height: 100%; width: 0; background: var(--ex-line); transition: width .25s; }
+
+.lab-main { max-width: 54rem; padding: 34px 42px 90px; }
+.lab-hero { margin-bottom: 26px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+.lab-hero .kicker { font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ex-line); }
+.lab-hero h1 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.2; margin: 6px 0 8px; }
+.lab-hero .subtitle { font-size: 1.1rem; color: var(--muted); margin: 0 0 14px; line-height: 1.6; }
+.lab-hero .meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.lab-hero .meta .chip { background: var(--ink); }
+
+.step { padding: 24px 0 8px; border-bottom: 1px solid var(--line); scroll-margin-top: calc(var(--topbar-h) + 10px); }
+.step > header { display: flex; gap: 14px; align-items: baseline; margin-bottom: 10px; }
+.step .n { flex: none; width: 2.1rem; height: 2.1rem; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--accent); font-weight: 700; font-size: .95rem; }
+.step h2 { font-size: 1.35rem; line-height: 1.35; margin: 0; flex: 1; }
+.step .time { font-size: .8rem; color: var(--muted); white-space: nowrap; }
+.step .prose { padding-left: calc(2.1rem + 14px); }
+
+/* OS / IDE specific blocks */
+html[data-os="mac"] .os-win, html[data-os="win"] .os-mac,
+html[data-ide="vscode"] .ide-antigravity, html[data-ide="antigravity"] .ide-vscode { display: none !important; }
+.only { border-left: 3px solid var(--line); padding-left: 14px; margin-bottom: 1em; }
+.only::before { display: block; font-family: var(--font-ui); font-size: .72rem; font-weight: 700; letter-spacing: .08em; color: var(--muted); margin-bottom: 4px; }
+.only.os-mac::before { content: "macOS"; }
+.only.os-win::before { content: "WINDOWS"; }
+.only.ide-vscode::before { content: "VS CODE"; }
+.only.ide-antigravity::before { content: "ANTIGRAVITY"; }
+.only > :last-child { margin-bottom: 0; }
+
+.copy { position: absolute; top: 8px; right: 8px; height: 26px; padding: 0 9px; border-radius: 6px; border: 1px solid #3a4666; background: #232d49; color: var(--code-fg); font-size: .72rem; font-family: var(--font-ui); opacity: .75; }
+.copy:hover { opacity: 1; }
+.prose pre { padding-right: 70px; }
+.out { background: #10151f !important; color: #b9c4d9 !important; border-left: 3px solid var(--ex-line); }
+
+@media (max-width: 900px) {
+  .lab { grid-template-columns: 1fr; }
+  .steps-nav { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+  .lab-main { padding: 24px 18px 70px; }
+  .step .prose { padding-left: 0; }
+  .topbar .title { display: none; }
+  .switches .label { display: none; }
+}
+@media print {
+  .topbar, .steps-nav, .copy { display: none; }
+  .lab { display: block; }
+}
+
+/* Fill-in forms on activity pages */
+.canvas { width: 100%; }
+.canvas th small { display: block; font-weight: 400; color: var(--muted); line-height: 1.4; margin-top: 2px; }
+.canvas td { background: #fff; }
+
+</style>
+</head>
+<body class="">
+<header class="topbar"><span class="brand">Agentic <b>AI</b></span><span class="chip">Lab 1</span><span class="title"><span lang="th">Agent สี่แบบใน environment เดียวกัน</span><span lang="en">Four agents in one environment</span></span><div class="switches"><div class="seg" role="group" aria-label="Language"><button type="button" data-set-lang="th">ไทย</button><button type="button" data-set-lang="en">EN</button></div></div></header><div class="lab"><nav class="steps-nav"><h2><span lang="th">ขั้นตอน</span><span lang="en">Steps</span></h2><ol><li><input type="checkbox" value="prepare" aria-label="done"><a href="#prepare"><span lang="th">อัปเดต repository</span><span lang="en">Update the repository</span></a></li><li><input type="checkbox" value="open" aria-label="done"><a href="#open"><span lang="th">เปิด notebook และบันทึกเป็นไฟล์ของคุณ</span><span lang="en">Open the notebook and save your own copy</span></a></li><li><input type="checkbox" value="core" aria-label="done"><a href="#core"><span lang="th">Core: ส่วนที่ 1–6</span><span lang="en">Core: parts 1–6</span></a></li><li><input type="checkbox" value="stretch" aria-label="done"><a href="#stretch"><span lang="th">Stretch: hybrid agent</span><span lang="en">Stretch: a hybrid agent</span></a></li><li><input type="checkbox" value="submit" aria-label="done"><a href="#submit"><span lang="th">สิ่งที่ต้องส่ง และการแก้ปัญหา</span><span lang="en">What to hand in, and troubleshooting</span></a></li></ol><div class="lab-progress"><span lang="th">ทำแล้ว</span><span lang="en">Done</span> <span class="n"></span><div class="track"><i></i></div></div></nav><main class="lab-main"><div class="lab-hero"><div class="kicker">Lab 1</div><h1><span lang="th">Agent สี่แบบใน environment เดียวกัน</span><span lang="en">Four agents in one environment</span></h1><p class="subtitle"><span lang="th">สร้าง reflex agent, model-based agent และ LLM agent สำหรับกล่องเอกสารขาเข้า แล้ววัดผลด้วย performance measure เดียวกัน</span><span lang="en">Build a reflex agent, a model-based agent and an LLM agent for a document inbox, and score them on one performance measure</span></p><div class="meta"><span class="chip"><span lang="th">70 นาทีใน class</span><span lang="en">70 min in class</span></span><span class="chip"><span lang="th">ต่อจาก Module 1</span><span lang="en">Follows Module 1</span></span><span class="chip"><span lang="th">Core 6 ส่วน + Stretch 1 ส่วน</span><span lang="en">6 Core parts + 1 Stretch part</span></span></div></div><div class="prose"><div lang="th"><p>Lab นี้เปลี่ยนแนวคิดจาก lecture ให้เป็น code คุณจะได้เห็นด้วยตัวเลขว่า agent แต่ละแบบทำอะไรได้และไม่ได้ และทำไม agent สมัยใหม่จึงเป็น LLM ที่มี code ดูแล state อยู่รอบๆ</p>
+<p><strong>เมื่อจบ lab คุณจะสามารถ</strong></p>
+<ul>
+<li>เขียน environment, percept, action และ performance measure ของงานเอกสารเป็น code ได้</li>
+<li>อธิบายด้วยผลการทดลองว่า simple reflex, model-based และ LLM agent ต่างกันอย่างไร</li>
+<li>ใช้ structured output จำแนกเอกสารและดึงข้อมูล แล้ววัดความถูกต้องทีละ field</li>
+<li>ชี้ได้ว่างานส่วนไหนควรให้ LLM ทำ และส่วนไหนควรให้ code ทำ</li>
+</ul></div><div lang="en"><p>This lab turns the ideas from the lecture into code. You will see in numbers what each kind of agent can and cannot do, and why a modern agent is an LLM with code around it looking after the state.</p>
+<p><strong>By the end you will be able to</strong></p>
+<ul>
+<li>Write the environment, percepts, actions and performance measure of a document task as code</li>
+<li>Explain, from experimental results, how simple reflex, model-based and LLM agents differ</li>
+<li>Use structured output to classify documents and extract data, and measure accuracy field by field</li>
+<li>Say which parts of a task belong to the LLM and which belong to code</li>
+</ul></div></div><section class="step" id="prepare"><header><span class="n">1</span><h2><span lang="th">อัปเดต repository</span><span lang="en">Update the repository</span></h2><span class="time"><span lang="th">ก่อน class</span><span lang="en">Before class</span></span></header><div class="prose"><div lang="th"><p>เปิดโฟลเดอร์ <code>agentic-ai</code> ใน editor แล้วรันใน terminal:</p>
+<pre><code class="language-bash">git pull
+uv sync
+uv run python lab-00-setup/check_setup.py
+</code></pre>
+<p>บรรทัดสุดท้ายต้องขึ้น <code>READY</code> ถ้าไม่ขึ้นให้กลับไปดูตารางแก้ปัญหาในคู่มือ Lab 0</p>
+<p>Lab นี้มีไฟล์ใหม่สามส่วน:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Path</th>
+<th>เนื้อหา</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data/inbox/</code></td>
+<td>เอกสาร 24 ฉบับ (<code>doc_01.txt</code> ถึง <code>doc_24.txt</code>)</td>
+</tr>
+<tr>
+<td><code>data/inbox_labels.csv</code></td>
+<td>เฉลย: ประเภท, action ที่ถูก, และข้อมูลของเอกสารการเงิน</td>
+</tr>
+<tr>
+<td><code>agentlab/inbox.py</code></td>
+<td>Environment ที่ส่งเอกสารให้ agent และให้คะแนน</td>
+</tr>
+</tbody>
+</table></div></div><div lang="en"><p>Open the <code>agentic-ai</code> folder in your editor and run in the terminal:</p>
+<pre><code class="language-bash">git pull
+uv sync
+uv run python lab-00-setup/check_setup.py
+</code></pre>
+<p>The last line must say <code>READY</code>. If it does not, go back to the troubleshooting table in the Lab 0 guide.</p>
+<p>This lab adds three things:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data/inbox/</code></td>
+<td>24 documents (<code>doc_01.txt</code> to <code>doc_24.txt</code>)</td>
+</tr>
+<tr>
+<td><code>data/inbox_labels.csv</code></td>
+<td>The answer key: type, correct action, and the data in the financial documents</td>
+</tr>
+<tr>
+<td><code>agentlab/inbox.py</code></td>
+<td>The environment that feeds documents to an agent and scores it</td>
+</tr>
+</tbody>
+</table></div></div></div></section><section class="step" id="open"><header><span class="n">2</span><h2><span lang="th">เปิด notebook และบันทึกเป็นไฟล์ของคุณ</span><span lang="en">Open the notebook and save your own copy</span></h2><span class="time"><span lang="th">2 นาที</span><span lang="en">2 min</span></span></header><div class="prose"><div lang="th"><ol>
+<li>เปิด <code>lab-01-agent-foundations/lab1_inbox_agents.th.ipynb</code> (ฉบับอังกฤษคือ <code>.en.ipynb</code> code เหมือนกัน)</li>
+<li>บันทึกเป็น <code>lab1_inbox_agents.mine.ipynb</code> ด้วย <strong>File &gt; Save As</strong> เพื่อไม่ให้ชนกับ <code>git pull</code> ครั้งถัดไป</li>
+<li>เลือก kernel <code>.venv</code> ที่มุมขวาบน</li>
+</ol>
+<p>ทุก cell รันได้ตั้งแต่ยังไม่แก้ ส่วนที่คุณต้องเขียนมีเครื่องหมาย <code># TODO</code></p></div><div lang="en"><ol>
+<li>Open <code>lab-01-agent-foundations/lab1_inbox_agents.en.ipynb</code> (the Thai version is <code>.th.ipynb</code>; the code is the same).</li>
+<li>Save it as <code>lab1_inbox_agents.mine.ipynb</code> with <strong>File &gt; Save As</strong>, so the next <code>git pull</code> cannot collide with it.</li>
+<li>Choose the <code>.venv</code> kernel at the top right.</li>
+</ol>
+<p>Every cell runs before you change anything. The parts you write are marked <code># TODO</code>.</p></div></div></section><section class="step" id="core"><header><span class="n">3</span><h2><span lang="th">Core: ส่วนที่ 1–6</span><span lang="en">Core: parts 1–6</span></h2><span class="time"><span lang="th">55 นาที</span><span lang="en">55 min</span></span></header><div class="prose"><div lang="th"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ส่วน</th>
+<th>สิ่งที่ทำ</th>
+<th>เวลา</th>
+<th>เชื่อมกับ lecture</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>รู้จัก environment และ performance measure</td>
+<td>5 นาที</td>
+<td>PEAS</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Simple reflex agent: เพิ่มกฎ</td>
+<td>10 นาที</td>
+<td>Condition–action rule</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Model-based reflex agent: จับ invoice ซ้ำ</td>
+<td>10 นาที</td>
+<td>Internal state</td>
+</tr>
+<tr>
+<td>4</td>
+<td>LLM agent: เขียน system prompt</td>
+<td>15 นาที</td>
+<td>LLM เป็น agent function</td>
+</tr>
+<tr>
+<td>5</td>
+<td>LLM + state</td>
+<td>10 นาที</td>
+<td>LLM ตัดสินใจ code ดูแล state</td>
+</tr>
+<tr>
+<td>6</td>
+<td>เปลี่ยน performance measure และดึงข้อมูลจากเอกสาร</td>
+<td>15 นาที</td>
+<td>Rationality, structured output</td>
+</tr>
+</tbody>
+</table></div>
+<p>ถ้าเวลาไม่พอ ให้ทำส่วนที่ 1–5 ให้จบใน class แล้วทำส่วนที่ 6 เป็นการบ้าน</p>
+<div class="callout tip">
+<p>ระหว่างปรับ prompt ในส่วนที่ 4 ใช้ <code>InboxEnvironment(limit=10)</code> เพื่อรันเฉพาะ 10 ฉบับแรก แล้วค่อยรันครบ 24 ฉบับเมื่อพอใจ</p>
+</div></div><div lang="en"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Part</th>
+<th>What you do</th>
+<th>Time</th>
+<th>Link to the lecture</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Meet the environment and its performance measure</td>
+<td>5 min</td>
+<td>PEAS</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Simple reflex agent: add rules</td>
+<td>10 min</td>
+<td>Condition–action rules</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Model-based reflex agent: catch duplicate invoices</td>
+<td>10 min</td>
+<td>Internal state</td>
+</tr>
+<tr>
+<td>4</td>
+<td>LLM agent: write the system prompt</td>
+<td>15 min</td>
+<td>The LLM as the agent function</td>
+</tr>
+<tr>
+<td>5</td>
+<td>LLM + state</td>
+<td>10 min</td>
+<td>The LLM decides; code keeps the state</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Change the performance measure, then extract data</td>
+<td>15 min</td>
+<td>Rationality, structured output</td>
+</tr>
+</tbody>
+</table></div>
+<p>If you run short of time, finish parts 1–5 in class and do part 6 as homework.</p>
+<div class="callout tip">
+<p>While tuning the prompt in part 4, use <code>InboxEnvironment(limit=10)</code> to run only the first 10 documents, then run all 24 once you are happy.</p>
+</div></div></div></section><section class="step" id="stretch"><header><span class="n">4</span><h2><span lang="th">Stretch: hybrid agent</span><span lang="en">Stretch: a hybrid agent</span></h2><span class="time"><span lang="th">ถ้ามีเวลา</span><span lang="en">If time allows</span></span></header><div class="prose"><div lang="th"><p>ส่วนที่ 7 ให้คุณสร้าง agent ที่ใช้กฎก่อน แล้วเรียก LLM เฉพาะเมื่อกฎไม่แน่ใจ เป้าหมายคือคะแนนเท่าเดิมด้วยจำนวน <code>llm_calls</code> ที่น้อยลง</p>
+<p>จากนั้นลองเปิด thinking ของ model หรือสลับไปใช้ API แล้วดูว่าคะแนนกับเวลาเปลี่ยนอย่างไร</p></div><div lang="en"><p>Part 7 has you build an agent that tries rules first and calls the LLM only when the rules are unsure. The aim is the same score with fewer <code>llm_calls</code>.</p>
+<p>After that, try turning the model's thinking on, or switching to an API, and see how score and time change.</p></div></div></section><section class="step" id="submit"><header><span class="n">5</span><h2><span lang="th">สิ่งที่ต้องส่ง และการแก้ปัญหา</span><span lang="en">What to hand in, and troubleshooting</span></h2><span class="time"><span lang="th">หลัง class</span><span lang="en">After class</span></span></header><div class="prose"><div lang="th"><h4>ส่งใน Moodle</h4>
+<ol>
+<li>ภาพตารางสรุปจากส่วนที่ 5 ที่มี agent ครบ 4 ตัว</li>
+<li>คำตอบของคำถาม 4 ข้อท้าย notebook ข้อละ 2–3 ประโยค</li>
+</ol>
+<h4>ปัญหาที่พบบ่อย</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>อาการ</th>
+<th>วิธีแก้</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cell ของ LLM agent ค้างนานเกิน 3 นาที</td>
+<td>กด Interrupt แล้วรัน <code>release_model()</code> ใน cell ใหม่ (หรือ <code>ollama stop qwen3.5:4b</code> ใน terminal) จากนั้นรัน cell เดิมอีกครั้ง</td>
+</tr>
+<tr>
+<td>เครื่องช้าลงเรื่อยๆ ระหว่างทำ lab</td>
+<td>Model ใช้ RAM เพิ่มขึ้นเมื่อเรียกหลายครั้ง <code>env.run()</code> คืน RAM ให้เองเมื่อจบแต่ละรอบ ถ้ายังช้า ให้รัน <code>release_model()</code> ใน cell ใหม่ และปิดโปรแกรมอื่น</td>
+</tr>
+<tr>
+<td><code>returned '...'; valid actions are [...]</code></td>
+<td>Agent ของคุณคืนค่าที่ไม่ใช่ 1 ใน 7 action ตรวจตัวสะกดในกฎ</td>
+</tr>
+<tr>
+<td><code>AttributeError: ... has no attribute 'seen'</code></td>
+<td>ลืมสร้าง <code>self.seen = set()</code> ใน <code>reset()</code></td>
+</tr>
+<tr>
+<td>คะแนนของ LLM agent ต่ำกว่า simple reflex</td>
+<td>อ่านรายการที่พลาดด้วย <code>mistakes("LLM")</code> แล้วเพิ่มคำนิยามของประเภทนั้นใน <code>SYSTEM</code></td>
+</tr>
+<tr>
+<td><code>ModuleNotFoundError: agentlab.inbox</code></td>
+<td>ยังไม่ได้รัน <code>git pull</code> และ <code>uv sync</code></td>
+</tr>
+</tbody>
+</table></div></div><div lang="en"><h4>Hand in on Moodle</h4>
+<ol>
+<li>A screenshot of the summary table from part 5 showing all 4 agents</li>
+<li>Your answers to the 4 questions at the end of the notebook, 2–3 sentences each</li>
+</ol>
+<h4>Common problems</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>An LLM agent cell hangs for more than 3 minutes</td>
+<td>Press Interrupt, run <code>release_model()</code> in a new cell (or <code>ollama stop qwen3.5:4b</code> in a terminal), then run the same cell again</td>
+</tr>
+<tr>
+<td>The machine gets slower as the lab goes on</td>
+<td>The model uses more RAM the more it is called. <code>env.run()</code> gives the RAM back at the end of each run. If it is still slow, run <code>release_model()</code> in a new cell and close other apps</td>
+</tr>
+<tr>
+<td><code>returned '...'; valid actions are [...]</code></td>
+<td>Your agent returned something that is not one of the 7 actions. Check the spelling in your rules</td>
+</tr>
+<tr>
+<td><code>AttributeError: ... has no attribute 'seen'</code></td>
+<td>You forgot to create <code>self.seen = set()</code> in <code>reset()</code></td>
+</tr>
+<tr>
+<td>The LLM agent scores below the simple reflex agent</td>
+<td>Read its mistakes with <code>mistakes("LLM")</code> and add a definition of that type to <code>SYSTEM</code></td>
+</tr>
+<tr>
+<td><code>ModuleNotFoundError: agentlab.inbox</code></td>
+<td>You have not run <code>git pull</code> and <code>uv sync</code> yet</td>
+</tr>
+</tbody>
+</table></div></div></div></section></main></div>
+<script>window.COURSE = {"id": "lab-01", "title": {"th": "Agent สี่แบบใน environment เดียวกัน", "en": "Four agents in one environment"}, "defaultLang": "th", "passMark": 60};</script>
+<script>
+/* Lab guide runtime: language / OS / IDE switches, copy buttons, step checklist. */
+(function () {
+  "use strict";
+  var META = window.COURSE || {};
+  var root = document.documentElement;
+  var KEY = "agentic-ai:" + (META.id || "lab");
+  var $$ = function (sel, el) { return Array.prototype.slice.call((el || document).querySelectorAll(sel)); };
+
+  var state = { l: META.defaultLang || "th", os: /Win/i.test(navigator.platform || navigator.userAgent) ? "win" : "mac", ide: "vscode", done: {} };
+  try {
+    var saved = JSON.parse(window.localStorage.getItem(KEY) || "null");
+    if (saved && typeof saved === "object") { for (var k in saved) state[k] = saved[k]; }
+  } catch (e) { /* storage unavailable or corrupt */ }
+  var p = new URLSearchParams(window.location.search).get("lang");
+  if (p === "th" || p === "en") state.l = p;
+
+  function save() { try { window.localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignore */ } }
+
+  function paint() {
+    root.setAttribute("data-lang", state.l);
+    root.setAttribute("lang", state.l);
+    root.setAttribute("data-os", state.os);
+    root.setAttribute("data-ide", state.ide);
+    $$("[data-set-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-set-lang") === state.l)); });
+    $$("[data-set-os]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-set-os") === state.os)); });
+    $$("[data-set-ide]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-set-ide") === state.ide)); });
+    if (META.title && META.title[state.l]) document.title = META.title[state.l];
+    var boxes = $$(".steps-nav input"), n = 0;
+    boxes.forEach(function (b) {
+      var on = !!state.done[b.value];
+      b.checked = on; if (on) n++;
+      b.parentNode.classList.toggle("done", on);
+    });
+    var bar = document.querySelector(".lab-progress .track i");
+    if (bar) bar.style.width = (boxes.length ? Math.round((n / boxes.length) * 100) : 0) + "%";
+    var cnt = document.querySelector(".lab-progress .n");
+    if (cnt) cnt.textContent = n + " / " + boxes.length;
+  }
+
+  ["lang", "os", "ide"].forEach(function (kind) {
+    $$("[data-set-" + kind + "]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        state[kind === "lang" ? "l" : kind] = b.getAttribute("data-set-" + kind);
+        save(); paint();
+      });
+    });
+  });
+  $$(".steps-nav input").forEach(function (b) {
+    b.addEventListener("change", function () { state.done[b.value] = b.checked; save(); paint(); });
+  });
+
+  $$(".prose pre").forEach(function (pre) {
+    if (pre.classList.contains("out")) return;
+    var btn = document.createElement("button");
+    btn.className = "copy"; btn.type = "button"; btn.textContent = "Copy";
+    btn.addEventListener("click", function () {
+      var text = (pre.querySelector("code") || pre).innerText;
+      var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy"; }, 1400); };
+      if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(done, function () {}); }
+      else {
+        var ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); done(); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+    });
+    pre.appendChild(btn);
+  });
+
+  paint();
+})();
+
+</script>
+</body>
+</html>

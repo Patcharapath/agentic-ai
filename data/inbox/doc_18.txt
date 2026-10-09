@@ -1,0 +1,13 @@
+From: procurement@datawork.example
+To: sales@officemart.example
+Subject: Order request 2026-A19
+
+Dear Sales Team,
+We would like to order the following items for delivery to our Bangkok
+office by 20 October 2026:
+  - 15 x ergonomic office chair, model EC-200, at 3,200.00 THB each
+Total: 48,000.00 THB
+Our order reference is PO-2026-121. Please confirm availability.
+
+Regards,
+Procurement, DataWork Co., Ltd.
