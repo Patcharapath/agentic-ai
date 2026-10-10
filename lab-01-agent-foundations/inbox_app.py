@@ -62,8 +62,8 @@ SYSTEM = """You sort incoming business documents. Choose the type that says what
 class Reading(BaseModel):
     """What the LLM reports about one document.
 
-    Two short fields and no free-text explanation: output tokens are the slow part,
-    and asking for a written reason made every document take three times as long.
+    Two short fields and no free-text explanation: output tokens are the slow part.
+    Asking for a written reason as well took a full run from 82 to 135 seconds.
     """
 
     doc_type: Literal["invoice", "receipt", "purchase_order", "contract", "leave_request", "other"]
@@ -222,6 +222,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     logging.getLogger("httpx").setLevel(logging.WARNING)  # one line per HTTP call is too noisy here
     if not args.folder.is_dir():

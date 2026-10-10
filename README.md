@@ -44,6 +44,8 @@ Save notebooks you edit under a name ending in `.mine.ipynb` so `git pull` never
 | `lab-XX-*/index.html` | คู่มือ lab สลับภาษาได้ / Lab guide with a language toggle |
 | `lab-XX-*/*.ipynb` | Notebook สำหรับทำความเข้าใจทีละขั้น ฉบับ `.th` และ `.en` (code เหมือนกัน) / Notebooks for step-by-step understanding, `.th` and `.en` (same code) |
 | `lab-XX-*/*.py` | โปรแกรมที่รันได้จริงจาก terminal / Programs you run for real from a terminal |
+| `lab-XX-*/*.th.md`, `*.en.md` | อธิบายโปรแกรมทีละส่วนสำหรับผู้เริ่มต้น / Part-by-part explanation of each program for beginners |
+| `lab-XX-*/README.md` | คำสั่งรันบน terminal ของ lab นั้น / Terminal commands for that lab |
 | `agentlab/` | Code ที่ทุก lab ใช้ร่วมกัน เช่น `get_llm()` / Helpers shared by all labs |
 | `.env.example` | แม่แบบการตั้งค่า คัดลอกเป็น `.env` / Settings template; copy to `.env` |
 

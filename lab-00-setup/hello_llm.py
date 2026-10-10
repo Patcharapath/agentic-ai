@@ -5,10 +5,12 @@ the same thing written as a program you can run for real:
 
     uv run python lab-00-setup/hello_llm.py "ใบกำกับภาษีต่างจากใบเสร็จรับเงินอย่างไร"
     uv run python lab-00-setup/hello_llm.py --file data/inbox/doc_01.txt "ยอดรวมเท่าไร และครบกำหนดชำระเมื่อไร"
+    uv run python lab-00-setup/hello_llm.py --out answer.txt "สรุปหน้าที่ของฝ่ายจัดซื้อใน 3 ข้อ"
     uv run python lab-00-setup/hello_llm.py --provider openrouter --temperature 0.7 "Name a coffee shop"
 
-The answer goes to standard output, so it can be saved or piped. Timing and
-token counts go to standard error and stay out of the saved answer.
+The answer goes to standard output and nothing else does: the model name,
+timing and token counts go to standard error, so another program reading the
+answer gets only the answer.
 """
 from __future__ import annotations
 
@@ -26,6 +28,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Ask an LLM one question, optionally about a text file.")
     parser.add_argument("question", help="the question to ask")
     parser.add_argument("--file", type=Path, help="a text file to give the model as context")
+    parser.add_argument("--out", type=Path, help="also save the answer to this file (UTF-8)")
     parser.add_argument("--provider", choices=list(PROVIDERS), help="override LLM_PROVIDER from .env")
     parser.add_argument("--temperature", type=float, default=0.0, help="0 = repeatable (default), higher = more varied")
     parser.add_argument("--keep-loaded", action="store_true", help="leave the local model in RAM afterwards")
@@ -42,6 +45,7 @@ def build_messages(question: str, file: Path | None) -> list[tuple[str, str]]:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
+    sys.stdout.reconfigure(encoding="utf-8")  # Windows defaults to a legacy encoding that cannot print Thai when piped
     if args.file is not None and not args.file.is_file():
         print(f"error: {args.file} is not a file", file=sys.stderr)
         return 2
@@ -63,6 +67,9 @@ def main(argv: list[str] | None = None) -> int:
         if not args.keep_loaded:
             release_model()
 
+    if args.out is not None and answer is not None:
+        args.out.write_text(answer.text + "\n", encoding="utf-8")
+        print(f"[saved to {args.out}]", file=sys.stderr)
     usage = (answer.usage_metadata or {}) if answer is not None else {}
     print(
         f"[{time.time() - started:.1f}s, {usage.get('input_tokens', '?')} input + {usage.get('output_tokens', '?')} output tokens]",
