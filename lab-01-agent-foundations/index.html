@@ -190,7 +190,7 @@ html[data-ide="vscode"] .ide-antigravity, html[data-ide="antigravity"] .ide-vsco
 </style>
 </head>
 <body class="">
-<header class="topbar"><span class="brand">Agentic <b>AI</b></span><span class="chip">Lab 1</span><span class="title"><span lang="th">Agent สี่แบบใน environment เดียวกัน</span><span lang="en">Four agents in one environment</span></span><div class="switches"><div class="seg" role="group" aria-label="Language"><button type="button" data-set-lang="th">ไทย</button><button type="button" data-set-lang="en">EN</button></div></div></header><div class="lab"><nav class="steps-nav"><h2><span lang="th">ขั้นตอน</span><span lang="en">Steps</span></h2><ol><li><input type="checkbox" value="prepare" aria-label="done"><a href="#prepare"><span lang="th">อัปเดต repository</span><span lang="en">Update the repository</span></a></li><li><input type="checkbox" value="open" aria-label="done"><a href="#open"><span lang="th">เปิด notebook และบันทึกเป็นไฟล์ของคุณ</span><span lang="en">Open the notebook and save your own copy</span></a></li><li><input type="checkbox" value="core" aria-label="done"><a href="#core"><span lang="th">Core: ส่วนที่ 1–6</span><span lang="en">Core: parts 1–6</span></a></li><li><input type="checkbox" value="stretch" aria-label="done"><a href="#stretch"><span lang="th">Stretch: hybrid agent</span><span lang="en">Stretch: a hybrid agent</span></a></li><li><input type="checkbox" value="submit" aria-label="done"><a href="#submit"><span lang="th">สิ่งที่ต้องส่ง และการแก้ปัญหา</span><span lang="en">What to hand in, and troubleshooting</span></a></li></ol><div class="lab-progress"><span lang="th">ทำแล้ว</span><span lang="en">Done</span> <span class="n"></span><div class="track"><i></i></div></div></nav><main class="lab-main"><div class="lab-hero"><div class="kicker">Lab 1</div><h1><span lang="th">Agent สี่แบบใน environment เดียวกัน</span><span lang="en">Four agents in one environment</span></h1><p class="subtitle"><span lang="th">สร้าง reflex agent, model-based agent และ LLM agent สำหรับกล่องเอกสารขาเข้า แล้ววัดผลด้วย performance measure เดียวกัน</span><span lang="en">Build a reflex agent, a model-based agent and an LLM agent for a document inbox, and score them on one performance measure</span></p><div class="meta"><span class="chip"><span lang="th">70 นาทีใน class</span><span lang="en">70 min in class</span></span><span class="chip"><span lang="th">ต่อจาก Module 1</span><span lang="en">Follows Module 1</span></span><span class="chip"><span lang="th">Core 6 ส่วน + Stretch 1 ส่วน</span><span lang="en">6 Core parts + 1 Stretch part</span></span></div></div><div class="prose"><div lang="th"><p>Lab นี้เปลี่ยนแนวคิดจาก lecture ให้เป็น code คุณจะได้เห็นด้วยตัวเลขว่า agent แต่ละแบบทำอะไรได้และไม่ได้ และทำไม agent สมัยใหม่จึงเป็น LLM ที่มี code ดูแล state อยู่รอบๆ</p>
+<header class="topbar"><span class="brand">Agentic <b>AI</b></span><span class="chip">Lab 1</span><span class="title"><span lang="th">Agent สี่แบบใน environment เดียวกัน</span><span lang="en">Four agents in one environment</span></span><div class="switches"><div class="seg" role="group" aria-label="Language"><button type="button" data-set-lang="th">ไทย</button><button type="button" data-set-lang="en">EN</button></div></div></header><div class="lab"><nav class="steps-nav"><h2><span lang="th">ขั้นตอน</span><span lang="en">Steps</span></h2><ol><li><input type="checkbox" value="prepare" aria-label="done"><a href="#prepare"><span lang="th">อัปเดต repository</span><span lang="en">Update the repository</span></a></li><li><input type="checkbox" value="open" aria-label="done"><a href="#open"><span lang="th">เปิด notebook และบันทึกเป็นไฟล์ของคุณ</span><span lang="en">Open the notebook and save your own copy</span></a></li><li><input type="checkbox" value="core" aria-label="done"><a href="#core"><span lang="th">Core: ส่วนที่ 1–6</span><span lang="en">Core: parts 1–6</span></a></li><li><input type="checkbox" value="stretch" aria-label="done"><a href="#stretch"><span lang="th">Stretch: hybrid agent</span><span lang="en">Stretch: a hybrid agent</span></a></li><li><input type="checkbox" value="program" aria-label="done"><a href="#program"><span lang="th">จาก notebook สู่โปรแกรม: inbox_app.py</span><span lang="en">From notebook to program: inbox_app.py</span></a></li><li><input type="checkbox" value="submit" aria-label="done"><a href="#submit"><span lang="th">สิ่งที่ต้องส่ง และการแก้ปัญหา</span><span lang="en">What to hand in, and troubleshooting</span></a></li></ol><div class="lab-progress"><span lang="th">ทำแล้ว</span><span lang="en">Done</span> <span class="n"></span><div class="track"><i></i></div></div></nav><main class="lab-main"><div class="lab-hero"><div class="kicker">Lab 1</div><h1><span lang="th">Agent สี่แบบใน environment เดียวกัน</span><span lang="en">Four agents in one environment</span></h1><p class="subtitle"><span lang="th">สร้าง reflex agent, model-based agent และ LLM agent สำหรับกล่องเอกสารขาเข้า แล้ววัดผลด้วย performance measure เดียวกัน</span><span lang="en">Build a reflex agent, a model-based agent and an LLM agent for a document inbox, and score them on one performance measure</span></p><div class="meta"><span class="chip"><span lang="th">70 นาทีใน class</span><span lang="en">70 min in class</span></span><span class="chip"><span lang="th">ต่อจาก Module 1</span><span lang="en">Follows Module 1</span></span><span class="chip"><span lang="th">Core 6 ส่วน + Stretch 1 ส่วน</span><span lang="en">6 Core parts + 1 Stretch part</span></span></div></div><div class="prose"><div lang="th"><p>Lab นี้เปลี่ยนแนวคิดจาก lecture ให้เป็น code คุณจะได้เห็นด้วยตัวเลขว่า agent แต่ละแบบทำอะไรได้และไม่ได้ และทำไม agent สมัยใหม่จึงเป็น LLM ที่มี code ดูแล state อยู่รอบๆ</p>
 <p><strong>เมื่อจบ lab คุณจะสามารถ</strong></p>
 <ul>
 <li>เขียน environment, percept, action และ performance measure ของงานเอกสารเป็น code ได้</li>
@@ -210,6 +210,7 @@ uv sync
 uv run python lab-00-setup/check_setup.py
 </code></pre>
 <p>บรรทัดสุดท้ายต้องขึ้น <code>READY</code> ถ้าไม่ขึ้นให้กลับไปดูตารางแก้ปัญหาในคู่มือ Lab 0</p>
+<p>ถ้าเครื่องของคุณไม่มี uv ให้ใช้คำสั่งของ pip แทนตามตารางในคู่มือ Lab 0 ขั้นที่ 2 ข้อ 4 lab นี้เพิ่ม package ใหม่ (pandas) จึงต้องรันคำสั่งติดตั้งอีกครั้งหลัง <code>git pull</code></p>
 <p>Lab นี้มีไฟล์ใหม่สามส่วน:</p>
 <div class="table-wrap"><table>
 <thead>
@@ -238,6 +239,7 @@ uv sync
 uv run python lab-00-setup/check_setup.py
 </code></pre>
 <p>The last line must say <code>READY</code>. If it does not, go back to the troubleshooting table in the Lab 0 guide.</p>
+<p>If your machine has no uv, use the pip commands from the table in the Lab 0 guide, step 2, part 4. This lab adds a new package (pandas), so run the install command again after <code>git pull</code>.</p>
 <p>This lab adds three things:</p>
 <div class="table-wrap"><table>
 <thead>
@@ -374,7 +376,147 @@ uv run python lab-00-setup/check_setup.py
 <p>While tuning the prompt in part 4, use <code>InboxEnvironment(limit=10)</code> to run only the first 10 documents, then run all 24 once you are happy.</p>
 </div></div></div></section><section class="step" id="stretch"><header><span class="n">4</span><h2><span lang="th">Stretch: hybrid agent</span><span lang="en">Stretch: a hybrid agent</span></h2><span class="time"><span lang="th">ถ้ามีเวลา</span><span lang="en">If time allows</span></span></header><div class="prose"><div lang="th"><p>ส่วนที่ 7 ให้คุณสร้าง agent ที่ใช้กฎก่อน แล้วเรียก LLM เฉพาะเมื่อกฎไม่แน่ใจ เป้าหมายคือคะแนนเท่าเดิมด้วยจำนวน <code>llm_calls</code> ที่น้อยลง</p>
 <p>จากนั้นลองเปิด thinking ของ model หรือสลับไปใช้ API แล้วดูว่าคะแนนกับเวลาเปลี่ยนอย่างไร</p></div><div lang="en"><p>Part 7 has you build an agent that tries rules first and calls the LLM only when the rules are unsure. The aim is the same score with fewer <code>llm_calls</code>.</p>
-<p>After that, try turning the model's thinking on, or switching to an API, and see how score and time change.</p></div></div></section><section class="step" id="submit"><header><span class="n">5</span><h2><span lang="th">สิ่งที่ต้องส่ง และการแก้ปัญหา</span><span lang="en">What to hand in, and troubleshooting</span></h2><span class="time"><span lang="th">หลัง class</span><span lang="en">After class</span></span></header><div class="prose"><div lang="th"><h4>ส่งใน Moodle</h4>
+<p>After that, try turning the model's thinking on, or switching to an API, and see how score and time change.</p></div></div></section><section class="step" id="program"><header><span class="n">5</span><h2><span lang="th">จาก notebook สู่โปรแกรม: inbox_app.py</span><span lang="en">From notebook to program: inbox_app.py</span></h2><span class="time"><span lang="th">10 นาที หลังทำ notebook</span><span lang="en">10 min, after the notebook</span></span></header><div class="prose"><div lang="th"><p>Notebook ช่วยให้เข้าใจทีละขั้น ส่วน <code>inbox_app.py</code> คือ agent ตัวเดียวกันที่เขียนแบบนำไปรันจริง: ชี้ไปที่โฟลเดอร์เอกสาร แล้วมันจำแนก ดึงข้อมูล และเขียนผลลงไฟล์ <strong>ทำ notebook ให้จบก่อนเปิดไฟล์นี้</strong> เพราะในไฟล์มีคำตอบของ <code># TODO</code></p>
+<pre><code class="language-bash">uv run python lab-01-agent-foundations/inbox_app.py
+</code></pre>
+<p>ผลลัพธ์อยู่ในโฟลเดอร์ <code>out/inbox/</code>:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ไฟล์</th>
+<th>เนื้อหา</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>routing.csv</code></td>
+<td>การตัดสินใจของทุกเอกสารพร้อมเหตุผล เปิดด้วย Excel ได้</td>
+</tr>
+<tr>
+<td><code>extracted.csv</code></td>
+<td>เลขที่ วันที่ ยอดรวม และสกุลเงินของเอกสารการเงิน</td>
+</tr>
+<tr>
+<td><code>state.json</code></td>
+<td>สิ่งที่ agent จำไว้: เอกสารที่ทำแล้ว และเลขที่ invoice ที่เคยรับ</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>ลองทำตามลำดับนี้</strong></p>
+<ol>
+<li>รันคำสั่งเดิมอีกครั้ง โปรแกรมบอกว่าทำครบแล้วและไม่เรียก LLM เลย เพราะ state อยู่ในไฟล์</li>
+<li>คัดลอก <code>data/inbox/doc_07.txt</code> ไปเป็น <code>data/inbox/doc_99.txt</code> แล้วรันอีกครั้ง ดูว่าโปรแกรมจัดการเอกสารใหม่อย่างไร เสร็จแล้วลบ <code>doc_99.txt</code> ออก</li>
+<li>รันด้วย <code>--reset --agent hybrid</code> แล้วเทียบจำนวน LLM call กับรอบแรก</li>
+<li>รันด้วย <code>--reset --agent rules</code> ซึ่งไม่ใช้ LLM เลย แล้วดูว่ามีกี่ฉบับที่ถูกส่งให้คน</li>
+</ol>
+<p><strong>สิ่งที่โปรแกรมมีเพิ่มจาก notebook</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ใน notebook</th>
+<th>ใน <code>inbox_app.py</code></th>
+<th>ทำไม</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>self.seen = set()</code> ใน memory</td>
+<td><code>State</code> ที่บันทึกลง <code>state.json</code></td>
+<td>ปิดโปรแกรมแล้ว state ต้องไม่หาย invoice ซ้ำอาจมาสัปดาห์หน้า</td>
+</tr>
+<tr>
+<td>ผลอยู่ใน DataFrame</td>
+<td>เขียน CSV หลังทุกเอกสาร</td>
+<td>คนที่ตรวจต้องเปิดดูได้ และถ้าโปรแกรมหยุดกลางทางงานต้องไม่หาย</td>
+</tr>
+<tr>
+<td>LLM error ทำให้ cell พัง</td>
+<td>จับ error แล้วส่งเอกสารนั้นให้คน</td>
+<td>เอกสารฉบับเดียวต้องไม่ทำให้ทั้งชุดหยุด</td>
+</tr>
+<tr>
+<td>แก้ค่าใน code</td>
+<td><code>--agent</code>, <code>--limit</code>, <code>--out</code>, <code>--reset</code></td>
+<td>รันซ้ำด้วยค่าต่างกันโดยไม่แก้ไฟล์</td>
+</tr>
+<tr>
+<td>LLM ตอบพร้อมคำอธิบายได้</td>
+<td>ขอแค่ 2 field สั้นๆ</td>
+<td>Output token คือส่วนที่ช้า การขอเหตุผลเป็นข้อความทำให้ช้าลง 3 เท่า</td>
+</tr>
+</tbody>
+</table></div>
+<p>คุณจะใช้โครงนี้เป็นจุดเริ่มต้นของ project ได้</p></div><div lang="en"><p>The notebook helps you understand one step at a time. <code>inbox_app.py</code> is the same agent written to be run for real: point it at a folder of documents and it classifies them, extracts the data, and writes the results to files. <strong>Finish the notebook before opening this file</strong>, because it contains the answers to the <code># TODO</code> items.</p>
+<pre><code class="language-bash">uv run python lab-01-agent-foundations/inbox_app.py
+</code></pre>
+<p>The results are in the <code>out/inbox/</code> folder:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>File</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>routing.csv</code></td>
+<td>The decision for every document, with the reason. Opens in Excel</td>
+</tr>
+<tr>
+<td><code>extracted.csv</code></td>
+<td>Number, date, total and currency of the financial documents</td>
+</tr>
+<tr>
+<td><code>state.json</code></td>
+<td>What the agent remembers: documents already done, and invoice numbers already received</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Try these in order</strong></p>
+<ol>
+<li>Run the same command again. The program reports everything is done and makes no LLM calls, because the state is in a file</li>
+<li>Copy <code>data/inbox/doc_07.txt</code> to <code>data/inbox/doc_99.txt</code> and run again. See how the program handles the new document, then delete <code>doc_99.txt</code></li>
+<li>Run with <code>--reset --agent hybrid</code> and compare the number of LLM calls with the first run</li>
+<li>Run with <code>--reset --agent rules</code>, which uses no LLM at all, and see how many documents go to a person</li>
+</ol>
+<p><strong>What the program has that the notebook did not</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>In the notebook</th>
+<th>In <code>inbox_app.py</code></th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>self.seen = set()</code> in memory</td>
+<td>A <code>State</code> saved to <code>state.json</code></td>
+<td>State must survive the program closing; a duplicate invoice may arrive next week</td>
+</tr>
+<tr>
+<td>Results in a DataFrame</td>
+<td>CSV written after every document</td>
+<td>The person checking needs to open it, and an interrupted run must lose nothing</td>
+</tr>
+<tr>
+<td>An LLM error breaks the cell</td>
+<td>The error is caught and that document goes to a person</td>
+<td>One document must not stop the whole batch</td>
+</tr>
+<tr>
+<td>Edit values in the code</td>
+<td><code>--agent</code>, <code>--limit</code>, <code>--out</code>, <code>--reset</code></td>
+<td>Re-run with different settings without touching the file</td>
+</tr>
+<tr>
+<td>The LLM may answer with an explanation</td>
+<td>Only 2 short fields are requested</td>
+<td>Output tokens are the slow part; asking for a written reason made it 3 times slower</td>
+</tr>
+</tbody>
+</table></div>
+<p>You can use this structure as the starting point for your project.</p></div></div></section><section class="step" id="submit"><header><span class="n">6</span><h2><span lang="th">สิ่งที่ต้องส่ง และการแก้ปัญหา</span><span lang="en">What to hand in, and troubleshooting</span></h2><span class="time"><span lang="th">หลัง class</span><span lang="en">After class</span></span></header><div class="prose"><div lang="th"><h4>ส่งใน Moodle</h4>
 <ol>
 <li>ภาพตารางสรุปจากส่วนที่ 5 ที่มี agent ครบ 4 ตัว</li>
 <li>คำตอบของคำถาม 4 ข้อท้าย notebook ข้อละ 2–3 ประโยค</li>

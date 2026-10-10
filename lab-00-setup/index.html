@@ -190,7 +190,7 @@ html[data-ide="vscode"] .ide-antigravity, html[data-ide="antigravity"] .ide-vsco
 </style>
 </head>
 <body class="">
-<header class="topbar"><span class="brand">Agentic <b>AI</b></span><span class="chip">Lab 0</span><span class="title"><span lang="th">เตรียมเครื่องและเรียก LLM ครั้งแรก</span><span lang="en">Set up your machine and make your first LLM call</span></span><div class="switches"><span class="label">OS</span><div class="seg" role="group" aria-label="Operating system"><button type="button" data-set-os="mac">macOS</button><button type="button" data-set-os="win">Windows</button></div><span class="label">IDE</span><div class="seg" role="group" aria-label="Editor"><button type="button" data-set-ide="vscode">VS Code</button><button type="button" data-set-ide="antigravity">Antigravity</button></div><div class="seg" role="group" aria-label="Language"><button type="button" data-set-lang="th">ไทย</button><button type="button" data-set-lang="en">EN</button></div></div></header><div class="lab"><nav class="steps-nav"><h2><span lang="th">ขั้นตอน</span><span lang="en">Steps</span></h2><ol><li><input type="checkbox" value="editor" aria-label="done"><a href="#editor"><span lang="th">ติดตั้ง editor และ extension</span><span lang="en">Install the editor and extensions</span></a></li><li><input type="checkbox" value="uv" aria-label="done"><a href="#uv"><span lang="th">ติดตั้ง uv</span><span lang="en">Install uv</span></a></li><li><input type="checkbox" value="project" aria-label="done"><a href="#project"><span lang="th">Clone repository และสร้าง environment</span><span lang="en">Clone the repository and create the environment</span></a></li><li><input type="checkbox" value="ollama" aria-label="done"><a href="#ollama"><span lang="th">ติดตั้ง Ollama และดาวน์โหลด local model</span><span lang="en">Install Ollama and download a local model</span></a></li><li><input type="checkbox" value="api" aria-label="done"><a href="#api"><span lang="th">ขอ API key และสร้างไฟล์ .env</span><span lang="en">Get an API key and create the .env file</span></a></li><li><input type="checkbox" value="check" aria-label="done"><a href="#check"><span lang="th">ตรวจการติดตั้งด้วย check_setup.py</span><span lang="en">Verify the setup with check_setup.py</span></a></li><li><input type="checkbox" value="notebook" aria-label="done"><a href="#notebook"><span lang="th">เรียก LLM ครั้งแรกใน notebook</span><span lang="en">Make your first LLM call in a notebook</span></a></li><li><input type="checkbox" value="submit" aria-label="done"><a href="#submit"><span lang="th">สิ่งที่ต้องส่ง และการแก้ปัญหา</span><span lang="en">What to hand in, and troubleshooting</span></a></li></ol><div class="lab-progress"><span lang="th">ทำแล้ว</span><span lang="en">Done</span> <span class="n"></span><div class="track"><i></i></div></div></nav><main class="lab-main"><div class="lab-hero"><div class="kicker">Lab 0</div><h1><span lang="th">เตรียมเครื่องและเรียก LLM ครั้งแรก</span><span lang="en">Set up your machine and make your first LLM call</span></h1><p class="subtitle"><span lang="th">ติดตั้ง editor, Python environment, local model และ API key ให้พร้อมก่อน class แรก</span><span lang="en">Install an editor, a Python environment, a local model and an API key before class 1</span></p><div class="meta"><span class="chip"><span lang="th">60–90 นาที (ส่วนใหญ่คือเวลาดาวน์โหลด)</span><span lang="en">60–90 min (mostly download time)</span></span><span class="chip"><span lang="th">ทำก่อน class แรก</span><span lang="en">Complete before class 1</span></span><span class="chip"><span lang="th">พื้นที่ว่างอย่างน้อย 10 GB</span><span lang="en">At least 10 GB free disk</span></span></div></div><div class="prose"><div lang="th"><p>เมื่อจบ lab นี้ เครื่องของคุณจะเรียก LLM ผ่าน LangChain ได้สองทาง: model ที่รันในเครื่องด้วย Ollama ซึ่งเป็น <strong>ทางหลักของวิชานี้</strong> และ model ผ่าน API ที่ใช้ได้ฟรีเป็นทางสำรอง ทุก lab ใช้การตั้งค่าชุดนี้ จึงทำครั้งเดียว</p>
+<header class="topbar"><span class="brand">Agentic <b>AI</b></span><span class="chip">Lab 0</span><span class="title"><span lang="th">เตรียมเครื่องและเรียก LLM ครั้งแรก</span><span lang="en">Set up your machine and make your first LLM call</span></span><div class="switches"><span class="label">OS</span><div class="seg" role="group" aria-label="Operating system"><button type="button" data-set-os="mac">macOS</button><button type="button" data-set-os="win">Windows</button></div><span class="label">IDE</span><div class="seg" role="group" aria-label="Editor"><button type="button" data-set-ide="vscode">VS Code</button><button type="button" data-set-ide="antigravity">Antigravity</button></div><div class="seg" role="group" aria-label="Language"><button type="button" data-set-lang="th">ไทย</button><button type="button" data-set-lang="en">EN</button></div></div></header><div class="lab"><nav class="steps-nav"><h2><span lang="th">ขั้นตอน</span><span lang="en">Steps</span></h2><ol><li><input type="checkbox" value="editor" aria-label="done"><a href="#editor"><span lang="th">ติดตั้ง editor และ extension</span><span lang="en">Install the editor and extensions</span></a></li><li><input type="checkbox" value="uv" aria-label="done"><a href="#uv"><span lang="th">ตรวจและติดตั้ง uv</span><span lang="en">Check for uv and install it</span></a></li><li><input type="checkbox" value="project" aria-label="done"><a href="#project"><span lang="th">Clone repository และสร้าง environment</span><span lang="en">Clone the repository and create the environment</span></a></li><li><input type="checkbox" value="ollama" aria-label="done"><a href="#ollama"><span lang="th">ติดตั้ง Ollama และดาวน์โหลด local model</span><span lang="en">Install Ollama and download a local model</span></a></li><li><input type="checkbox" value="api" aria-label="done"><a href="#api"><span lang="th">ขอ API key และสร้างไฟล์ .env</span><span lang="en">Get an API key and create the .env file</span></a></li><li><input type="checkbox" value="check" aria-label="done"><a href="#check"><span lang="th">ตรวจการติดตั้งด้วย check_setup.py</span><span lang="en">Verify the setup with check_setup.py</span></a></li><li><input type="checkbox" value="notebook" aria-label="done"><a href="#notebook"><span lang="th">เรียก LLM ครั้งแรกใน notebook</span><span lang="en">Make your first LLM call in a notebook</span></a></li><li><input type="checkbox" value="script" aria-label="done"><a href="#script"><span lang="th">รันเป็นโปรแกรม .py</span><span lang="en">Run it as a .py program</span></a></li><li><input type="checkbox" value="submit" aria-label="done"><a href="#submit"><span lang="th">สิ่งที่ต้องส่ง และการแก้ปัญหา</span><span lang="en">What to hand in, and troubleshooting</span></a></li></ol><div class="lab-progress"><span lang="th">ทำแล้ว</span><span lang="en">Done</span> <span class="n"></span><div class="track"><i></i></div></div></nav><main class="lab-main"><div class="lab-hero"><div class="kicker">Lab 0</div><h1><span lang="th">เตรียมเครื่องและเรียก LLM ครั้งแรก</span><span lang="en">Set up your machine and make your first LLM call</span></h1><p class="subtitle"><span lang="th">ติดตั้ง editor, Python environment, local model และ API key ให้พร้อมก่อน class แรก</span><span lang="en">Install an editor, a Python environment, a local model and an API key before class 1</span></p><div class="meta"><span class="chip"><span lang="th">60–90 นาที (ส่วนใหญ่คือเวลาดาวน์โหลด)</span><span lang="en">60–90 min (mostly download time)</span></span><span class="chip"><span lang="th">ทำก่อน class แรก</span><span lang="en">Complete before class 1</span></span><span class="chip"><span lang="th">พื้นที่ว่างอย่างน้อย 10 GB</span><span lang="en">At least 10 GB free disk</span></span></div></div><div class="prose"><div lang="th"><p>เมื่อจบ lab นี้ เครื่องของคุณจะเรียก LLM ผ่าน LangChain ได้สองทาง: model ที่รันในเครื่องด้วย Ollama ซึ่งเป็น <strong>ทางหลักของวิชานี้</strong> และ model ผ่าน API ที่ใช้ได้ฟรีเป็นทางสำรอง ทุก lab ใช้การตั้งค่าชุดนี้ จึงทำครั้งเดียว</p>
 <p>เลือกระบบปฏิบัติการและ editor ของคุณที่แถบด้านบน คำสั่งในหน้านี้จะเปลี่ยนตาม ติ๊กช่องด้านซ้ายเมื่อทำแต่ละขั้นเสร็จ</p>
 <div class="table-wrap"><table>
 <thead>
@@ -302,35 +302,189 @@ html[data-ide="vscode"] .ide-antigravity, html[data-ide="antigravity"] .ide-vsco
 </div>
 <div class="callout tip">
 <p>Both editors have built-in AI coding help. In the labs, try writing the code yourself first and then use the AI to check or explain. You will understand how agents work far better than if the AI writes everything.</p>
-</div></div></div></section><section class="step" id="uv"><header><span class="n">2</span><h2><span lang="th">ติดตั้ง uv</span><span lang="en">Install uv</span></h2><span class="time"><span lang="th">5 นาที</span><span lang="en">5 min</span></span></header><div class="prose"><div lang="th"><p><code>uv</code> เป็นเครื่องมือจัดการ Python และ package มันจะดาวน์โหลด Python เวอร์ชันที่ lab ใช้ให้เอง คุณจึงไม่ต้องติดตั้ง Python แยก และไม่กระทบ Python ที่มีอยู่ในเครื่อง</p>
+</div></div></div></section><section class="step" id="uv"><header><span class="n">2</span><h2><span lang="th">ตรวจและติดตั้ง uv</span><span lang="en">Check for uv and install it</span></h2><span class="time"><span lang="th">5 นาที</span><span lang="en">5 min</span></span></header><div class="prose"><div lang="th"><p><code>uv</code> เป็นเครื่องมือจัดการ Python และ package มันจะดาวน์โหลด Python เวอร์ชันที่ lab ใช้ให้เอง คุณจึงไม่ต้องติดตั้ง Python แยก และไม่กระทบ Python ที่มีอยู่ในเครื่อง</p>
+<h4>1. ตรวจว่าเครื่องมี uv แล้วหรือยัง</h4>
 <div class="only os-mac">
 <p>เปิดแอป Terminal แล้วรัน:</p>
-<pre><code class="language-bash">curl -LsSf https://astral.sh/uv/install.sh | sh
-</code></pre>
 </div>
 <div class="only os-win">
 <p>เปิด PowerShell (กด <kbd>Win</kbd> แล้วพิมพ์ <code>powershell</code>) แล้วรัน:</p>
-<pre><code class="language-powershell">powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1 | iex&quot;
-</code></pre>
 </div>
-<p><strong>ปิดหน้าต่าง terminal แล้วเปิดใหม่</strong> จากนั้นตรวจว่าติดตั้งสำเร็จ:</p>
 <pre><code class="language-bash">uv --version
 </code></pre>
-<p>ควรเห็นหมายเลขเวอร์ชัน เช่น <code>uv 0.12.x</code></p></div><div lang="en"><p><code>uv</code> manages Python and packages. It downloads the Python version the labs use by itself, so you do not need to install Python separately, and it leaves any Python already on your machine alone.</p>
+<p>ถ้าเห็นหมายเลขเวอร์ชัน เช่น <code>uv 0.12.x</code> แปลว่ามีแล้ว ข้ามไปขั้นที่ 3 ได้เลย ถ้าขึ้นว่าไม่รู้จักคำสั่ง ให้ทำข้อ 2</p>
+<h4>2. ติดตั้ง uv</h4>
 <div class="only os-mac">
-<p>Open the Terminal app and run:</p>
 <pre><code class="language-bash">curl -LsSf https://astral.sh/uv/install.sh | sh
 </code></pre>
 </div>
 <div class="only os-win">
-<p>Open PowerShell (press <kbd>Win</kbd> and type <code>powershell</code>) and run:</p>
 <pre><code class="language-powershell">powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1 | iex&quot;
 </code></pre>
 </div>
-<p><strong>Close the terminal window and open a new one</strong>, then check the install:</p>
+<p><strong>ปิดหน้าต่าง terminal แล้วเปิดใหม่</strong> จากนั้นรัน <code>uv --version</code> อีกครั้ง ต้องเห็นหมายเลขเวอร์ชัน</p>
+<h4>3. ถ้าคำสั่งในข้อ 2 ใช้ไม่ได้</h4>
+<p>เครื่องขององค์กรบางเครื่องห้ามรัน script จากอินเทอร์เน็ต ให้ลองติดตั้งด้วยวิธีอื่น:</p>
+<div class="only os-mac">
+<pre><code class="language-bash">brew install uv
+</code></pre>
+<p>ใช้ได้เมื่อเครื่องมี Homebrew</p>
+</div>
+<div class="only os-win">
+<pre><code class="language-powershell">winget install --id=astral-sh.uv -e
+</code></pre>
+</div>
+<p>หรือถ้าเครื่องมี Python กับ pip อยู่แล้ว:</p>
+<pre><code class="language-bash">pip install uv
+</code></pre>
+<h4>4. ถ้าติดตั้ง uv ไม่ได้เลย: ใช้ Python กับ pip แทน</h4>
+<p>ทำ lab ได้ครบโดยไม่มี uv แต่คุณต้องติดตั้ง Python เอง ใช้เวอร์ชัน 3.11, 3.12 หรือ 3.13 จาก <a href="https://www.python.org/downloads/">https://www.python.org/downloads/</a></p>
+<div class="only os-win">
+<p>ในหน้าแรกของตัวติดตั้ง ให้ติ๊ก <strong>Add python.exe to PATH</strong> ก่อนกด Install</p>
+</div>
+<p>จากนั้นตลอดทั้งวิชา เมื่อคู่มือให้รันคำสั่ง uv ให้ใช้คำสั่งในตารางแทน (รันในโฟลเดอร์ <code>agentic-ai</code> หลัง clone ในขั้นที่ 3)</p>
+<div class="only os-mac">
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>คู่มือเขียนว่า</th>
+<th>ใช้แทนด้วย</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uv sync</code> (ครั้งแรก)</td>
+<td><code>python3 -m venv .venv</code> แล้วตามด้วย <code>.venv/bin/python -m pip install -e .</code></td>
+</tr>
+<tr>
+<td><code>uv sync</code> (ครั้งถัดไป)</td>
+<td><code>.venv/bin/python -m pip install -e .</code></td>
+</tr>
+<tr>
+<td><code>uv run python ไฟล์.py</code></td>
+<td><code>.venv/bin/python ไฟล์.py</code></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="only os-win">
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>คู่มือเขียนว่า</th>
+<th>ใช้แทนด้วย</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uv sync</code> (ครั้งแรก)</td>
+<td><code>py -m venv .venv</code> แล้วตามด้วย <code>.venv\Scripts\python -m pip install -e .</code></td>
+</tr>
+<tr>
+<td><code>uv sync</code> (ครั้งถัดไป)</td>
+<td><code>.venv\Scripts\python -m pip install -e .</code></td>
+</tr>
+<tr>
+<td><code>uv run python ไฟล์.py</code></td>
+<td><code>.venv\Scripts\python ไฟล์.py</code></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="callout warn">
+<p><code>uv</code> ติดตั้ง package ตามเวอร์ชันที่ผู้สอนทดสอบไว้ (จากไฟล์ <code>uv.lock</code>) ส่วน pip ติดตั้งเวอร์ชันล่าสุดที่เข้ากันได้ ซึ่งอาจต่างกันเล็กน้อย ถ้าผลลัพธ์ของคุณต่างจากเพื่อนโดยหาสาเหตุไม่ได้ ให้แจ้งผู้สอนว่าคุณใช้ pip</p>
+</div></div><div lang="en"><p><code>uv</code> manages Python and packages. It downloads the Python version the labs use by itself, so you do not need to install Python separately, and it leaves any Python already on your machine alone.</p>
+<h4>1. Check whether you already have uv</h4>
+<div class="only os-mac">
+<p>Open the Terminal app and run:</p>
+</div>
+<div class="only os-win">
+<p>Open PowerShell (press <kbd>Win</kbd> and type <code>powershell</code>) and run:</p>
+</div>
 <pre><code class="language-bash">uv --version
 </code></pre>
-<p>You should see a version number such as <code>uv 0.12.x</code>.</p></div></div></section><section class="step" id="project"><header><span class="n">3</span><h2><span lang="th">Clone repository และสร้าง environment</span><span lang="en">Clone the repository and create the environment</span></h2><span class="time"><span lang="th">10 นาที</span><span lang="en">10 min</span></span></header><div class="prose"><div lang="th"><p>ไฟล์ของทุก lab อยู่ใน GitHub repository ของรายวิชา คุณ clone ครั้งเดียว แล้วใช้ <code>git pull</code> รับ lab ใหม่ในแต่ละสัปดาห์</p>
+<p>If you see a version number such as <code>uv 0.12.x</code>, you have it: go straight to step 3. If the command is not recognised, do part 2.</p>
+<h4>2. Install uv</h4>
+<div class="only os-mac">
+<pre><code class="language-bash">curl -LsSf https://astral.sh/uv/install.sh | sh
+</code></pre>
+</div>
+<div class="only os-win">
+<pre><code class="language-powershell">powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1 | iex&quot;
+</code></pre>
+</div>
+<p><strong>Close the terminal window and open a new one</strong>, then run <code>uv --version</code> again. You should see a version number.</p>
+<h4>3. If the command in part 2 does not work</h4>
+<p>Some company machines forbid running scripts from the internet. Try another way to install it:</p>
+<div class="only os-mac">
+<pre><code class="language-bash">brew install uv
+</code></pre>
+<p>This works if the machine has Homebrew.</p>
+</div>
+<div class="only os-win">
+<pre><code class="language-powershell">winget install --id=astral-sh.uv -e
+</code></pre>
+</div>
+<p>Or, if the machine already has Python and pip:</p>
+<pre><code class="language-bash">pip install uv
+</code></pre>
+<h4>4. If you cannot install uv at all: use Python and pip</h4>
+<p>Every lab can be done without uv, but you have to install Python yourself. Use version 3.11, 3.12 or 3.13 from <a href="https://www.python.org/downloads/">https://www.python.org/downloads/</a>.</p>
+<div class="only os-win">
+<p>On the first screen of the installer, tick <strong>Add python.exe to PATH</strong> before pressing Install.</p>
+</div>
+<p>From then on, whenever a guide in this course gives a uv command, use the one in this table (run inside the <code>agentic-ai</code> folder, after cloning in step 3).</p>
+<div class="only os-mac">
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>The guide says</th>
+<th>Use this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uv sync</code> (first time)</td>
+<td><code>python3 -m venv .venv</code>, then <code>.venv/bin/python -m pip install -e .</code></td>
+</tr>
+<tr>
+<td><code>uv sync</code> (later)</td>
+<td><code>.venv/bin/python -m pip install -e .</code></td>
+</tr>
+<tr>
+<td><code>uv run python file.py</code></td>
+<td><code>.venv/bin/python file.py</code></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="only os-win">
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>The guide says</th>
+<th>Use this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uv sync</code> (first time)</td>
+<td><code>py -m venv .venv</code>, then <code>.venv\Scripts\python -m pip install -e .</code></td>
+</tr>
+<tr>
+<td><code>uv sync</code> (later)</td>
+<td><code>.venv\Scripts\python -m pip install -e .</code></td>
+</tr>
+<tr>
+<td><code>uv run python file.py</code></td>
+<td><code>.venv\Scripts\python file.py</code></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="callout warn">
+<p><code>uv</code> installs the exact package versions your instructor tested (from the <code>uv.lock</code> file). pip installs the newest compatible versions, which may differ slightly. If your results differ from your classmates' and you cannot see why, tell your instructor you are using pip.</p>
+</div></div></div></section><section class="step" id="project"><header><span class="n">3</span><h2><span lang="th">Clone repository และสร้าง environment</span><span lang="en">Clone the repository and create the environment</span></h2><span class="time"><span lang="th">10 นาที</span><span lang="en">10 min</span></span></header><div class="prose"><div lang="th"><p>ไฟล์ของทุก lab อยู่ใน GitHub repository ของรายวิชา คุณ clone ครั้งเดียว แล้วใช้ <code>git pull</code> รับ lab ใหม่ในแต่ละสัปดาห์</p>
 <ol>
 <li>ตรวจว่ามี Git ในเครื่อง โดยรันใน terminal:</li>
 </ol>
@@ -362,7 +516,7 @@ git clone https://github.com/VRU-AI-SWU/agentic-ai.git
 </ol>
 <pre><code class="language-bash">uv sync
 </code></pre>
-<p>คำสั่งนี้ดาวน์โหลด Python 3.12 และ package ทั้งหมดลงในโฟลเดอร์ <code>.venv</code> ใช้เวลา 2–5 นาทีในครั้งแรก</p>
+<p>คำสั่งนี้ดาวน์โหลด Python 3.12 และ package ทั้งหมดลงในโฟลเดอร์ <code>.venv</code> ใช้เวลา 2–5 นาทีในครั้งแรก ถ้าเครื่องของคุณไม่มี uv ให้ใช้คำสั่งจากตารางในขั้นที่ 2 ข้อ 4 แทน</p>
 <ol start="5">
 <li>บอก editor ให้ใช้ environment นี้: กด <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> พิมพ์ <code>Python: Select Interpreter</code> แล้วเลือกรายการที่มีคำว่า <code>.venv</code></li>
 </ol>
@@ -406,7 +560,7 @@ git clone https://github.com/VRU-AI-SWU/agentic-ai.git
 </ol>
 <pre><code class="language-bash">uv sync
 </code></pre>
-<p>This downloads Python 3.12 and all packages into a <code>.venv</code> folder. It takes 2–5 minutes the first time.</p>
+<p>This downloads Python 3.12 and all packages into a <code>.venv</code> folder. It takes 2–5 minutes the first time. If your machine has no uv, use the commands from the table in step 2, part 4.</p>
 <ol start="5">
 <li>Tell the editor to use this environment: press <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>, type <code>Python: Select Interpreter</code>, and choose the entry that mentions <code>.venv</code>.</li>
 </ol>
@@ -700,7 +854,81 @@ uv sync
 <p>The notebook lets you try what you learned in Module 0: messages and roles, streaming, temperature, Thai versus English token counts, and structured output from an invoice.</p>
 <ol start="4">
 <li>Do the 3 exercises at the end of the notebook. Before editing code, save it as <code>hello_llm.mine.ipynb</code>.</li>
-</ol></div></div></section><section class="step" id="submit"><header><span class="n">8</span><h2><span lang="th">สิ่งที่ต้องส่ง และการแก้ปัญหา</span><span lang="en">What to hand in, and troubleshooting</span></h2><span class="time"><span lang="th">5 นาที</span><span lang="en">5 min</span></span></header><div class="prose"><div lang="th"><h4>ส่งใน Moodle ก่อน class แรก</h4>
+</ol></div></div></section><section class="step" id="script"><header><span class="n">8</span><h2><span lang="th">รันเป็นโปรแกรม .py</span><span lang="en">Run it as a .py program</span></h2><span class="time"><span lang="th">5 นาที</span><span lang="en">5 min</span></span></header><div class="prose"><div lang="th"><p>Notebook เหมาะกับการทดลองและทำความเข้าใจทีละขั้น แต่งานจริงรันเป็นโปรแกรม: เรียกจาก terminal ได้ ตั้งเวลาให้รันเองได้ และนำไปต่อกับระบบอื่นได้ ทุก lab ในวิชานี้จึงมีไฟล์ <code>.py</code> คู่กับ notebook</p>
+<p>ไฟล์ <code>lab-00-setup/hello_llm.py</code> ทำสิ่งเดียวกับ notebook ในรูปของโปรแกรม ลองรัน:</p>
+<pre><code class="language-bash">uv run python lab-00-setup/hello_llm.py &quot;ใบกำกับภาษีต่างจากใบเสร็จรับเงินอย่างไร&quot;
+</code></pre>
+<p>ถามเกี่ยวกับเอกสารด้วย <code>--file</code>:</p>
+<pre><code class="language-bash">uv run python lab-00-setup/hello_llm.py --file data/inbox/doc_01.txt &quot;ยอดรวมเท่าไร และต้องชำระภายในกี่วัน&quot;
+</code></pre>
+<p>ดูตัวเลือกทั้งหมดด้วย <code>--help</code> แล้วเปิดไฟล์อ่าน สิ่งที่ควรสังเกต:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ในไฟล์ <code>.py</code></th>
+<th>ทำไมต้องมี</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parse_args()</code></td>
+<td>รับค่าจาก command line แทนการแก้ code ทุกครั้ง</td>
+</tr>
+<tr>
+<td><code>main()</code> และ <code>if __name__ == "__main__":</code></td>
+<td>จุดเริ่มต้นที่ชัดเจน และ import ไปใช้ในไฟล์อื่นได้</td>
+</tr>
+<tr>
+<td><code>try</code> / <code>except</code> รอบการเรียก LLM</td>
+<td>LLM ล้มเหลวได้ โปรแกรมต้องบอกสาเหตุ ไม่ใช่พังพร้อม traceback</td>
+</tr>
+<tr>
+<td><code>return 0</code>, <code>1</code>, <code>2</code></td>
+<td>Exit code บอกโปรแกรมอื่นว่าสำเร็จหรือไม่</td>
+</tr>
+<tr>
+<td>คำตอบไป stdout ส่วนเวลาและ token ไป stderr</td>
+<td>บันทึกคำตอบลงไฟล์ได้โดยไม่มีข้อมูลอื่นปน</td>
+</tr>
+</tbody>
+</table></div></div><div lang="en"><p>A notebook is good for experimenting and understanding one step at a time. Real work runs as a program: it can be called from a terminal, scheduled, and connected to other systems. So every lab in this course has a <code>.py</code> file alongside its notebook.</p>
+<p><code>lab-00-setup/hello_llm.py</code> does what the notebook does, as a program. Try it:</p>
+<pre><code class="language-bash">uv run python lab-00-setup/hello_llm.py &quot;How is a tax invoice different from a receipt?&quot;
+</code></pre>
+<p>Ask about a document with <code>--file</code>:</p>
+<pre><code class="language-bash">uv run python lab-00-setup/hello_llm.py --file data/inbox/doc_01.txt &quot;What is the total, and how many days until it is due?&quot;
+</code></pre>
+<p>See every option with <code>--help</code>, then open the file and read it. Things to notice:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>In the <code>.py</code> file</th>
+<th>Why it is there</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parse_args()</code></td>
+<td>Takes values from the command line, so you do not edit code each time</td>
+</tr>
+<tr>
+<td><code>main()</code> and <code>if __name__ == "__main__":</code></td>
+<td>A clear entry point, and the file can be imported elsewhere</td>
+</tr>
+<tr>
+<td><code>try</code> / <code>except</code> around the LLM call</td>
+<td>LLM calls fail. A program should say why, not die with a traceback</td>
+</tr>
+<tr>
+<td><code>return 0</code>, <code>1</code>, <code>2</code></td>
+<td>The exit code tells other programs whether it worked</td>
+</tr>
+<tr>
+<td>The answer goes to stdout; timing and tokens go to stderr</td>
+<td>You can save the answer to a file with nothing else mixed in</td>
+</tr>
+</tbody>
+</table></div></div></div></section><section class="step" id="submit"><header><span class="n">9</span><h2><span lang="th">สิ่งที่ต้องส่ง และการแก้ปัญหา</span><span lang="en">What to hand in, and troubleshooting</span></h2><span class="time"><span lang="th">5 นาที</span><span lang="en">5 min</span></span></header><div class="prose"><div lang="th"><h4>ส่งใน Moodle ก่อน class แรก</h4>
 <ol>
 <li>ภาพหน้าจอของผลลัพธ์ <code>check_setup.py</code> ที่เห็นบรรทัด <code>READY</code> <strong>ตรวจให้แน่ใจว่าไม่มี API key อยู่ในภาพ</strong> (script ไม่พิมพ์ key ออกมา)</li>
 <li>คำตอบของแบบฝึกหัดข้อ 3 ใน notebook: model ตอบอย่างไรเมื่อยอดรวมใน invoice ไม่ตรงกับผลบวกของรายการ เขียน 2–3 ประโยค</li>
@@ -716,7 +944,7 @@ uv sync
 <tbody>
 <tr>
 <td><code>uv: command not found</code> หรือ <code>uv is not recognized</code></td>
-<td>ปิด terminal แล้วเปิดใหม่ ถ้ายังไม่ได้ให้ติดตั้ง uv ซ้ำ</td>
+<td>ปิด terminal แล้วเปิดใหม่ ถ้ายังไม่ได้ ดูวิธีติดตั้งแบบอื่นและทางเลือกที่ไม่ใช้ uv ในขั้นที่ 2 ข้อ 3 และ 4</td>
 </tr>
 <tr>
 <td><code>git: command not found</code> หรือ <code>git is not recognized</code></td>
@@ -788,7 +1016,7 @@ uv sync
 <tbody>
 <tr>
 <td><code>uv: command not found</code> or <code>uv is not recognized</code></td>
-<td>Close the terminal and open a new one. If it still fails, install uv again</td>
+<td>Close the terminal and open a new one. If it still fails, see the other install methods and the no-uv route in step 2, parts 3 and 4</td>
 </tr>
 <tr>
 <td><code>git: command not found</code> or <code>git is not recognized</code></td>

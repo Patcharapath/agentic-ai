@@ -11,3 +11,6 @@ lab-*/src/
 
 # Released by the instructor after each class
 *.solution.ipynb
+
+# Results written by the lab programs
+out/

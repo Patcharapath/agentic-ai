@@ -48,7 +48,7 @@ def check_python() -> bool:
     ok = (3, 11) <= (v.major, v.minor) < (3, 14)
     record("ok" if ok else "fail", "Python version", f"{v.major}.{v.minor}.{v.micro}" + ("" if ok else " (need 3.11-3.13; run with 'uv run')"))
     in_venv = sys.prefix != sys.base_prefix
-    record("ok" if in_venv else "warn", "Virtual environment", sys.prefix if in_venv else "not in .venv; start this script with 'uv run python ...'")
+    record("ok" if in_venv else "warn", "Virtual environment", sys.prefix if in_venv else "not in .venv; start this script with 'uv run python ...' (without uv: the .venv's own python)")
     return ok
 
 
@@ -59,7 +59,7 @@ def check_packages() -> bool:
             record("ok", f"Package {p}", md.version(p))
         except md.PackageNotFoundError:
             missing.append(p)
-            record("fail", f"Package {p}", "not installed; run 'uv sync' in the repository folder")
+            record("fail", f"Package {p}", "not installed; run 'uv sync' in the repository folder (without uv: pip install -e .)")
     return not missing
 
 

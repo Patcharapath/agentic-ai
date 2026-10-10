@@ -18,6 +18,15 @@ uv run python lab-00-setup/check_setup.py
 คู่มือฉบับเต็มของ Lab 0 (ไทย/อังกฤษ, macOS/Windows, VS Code/Antigravity) อยู่ที่ `lab-00-setup/index.html` เปิดด้วย browser หลัง clone
 The full Lab 0 guide (Thai/English, macOS/Windows, VS Code/Antigravity) is `lab-00-setup/index.html`; open it in a browser after cloning.
 
+ไม่มี uv? / No uv? ทำ lab ได้ด้วย Python 3.11–3.13 กับ pip ดูคำสั่งในคู่มือ Lab 0 ขั้นที่ 2 ข้อ 4
+The labs also work with Python 3.11–3.13 and pip; see the Lab 0 guide, step 2, part 4.
+
+```bash
+python3 -m venv .venv                      # Windows: py -m venv .venv
+.venv/bin/python -m pip install -e .        # Windows: .venv\Scripts\python -m pip install -e .
+.venv/bin/python lab-00-setup/check_setup.py
+```
+
 ก่อนเข้า class ทุกครั้ง / Before every class:
 
 ```bash
@@ -33,7 +42,8 @@ Save notebooks you edit under a name ending in `.mine.ipynb` so `git pull` never
 | Path | เนื้อหา / Contents |
 |---|---|
 | `lab-XX-*/index.html` | คู่มือ lab สลับภาษาได้ / Lab guide with a language toggle |
-| `lab-XX-*/*.ipynb` | Notebook ฉบับ `.th` และ `.en` (code เหมือนกัน) / `.th` and `.en` notebooks (same code) |
+| `lab-XX-*/*.ipynb` | Notebook สำหรับทำความเข้าใจทีละขั้น ฉบับ `.th` และ `.en` (code เหมือนกัน) / Notebooks for step-by-step understanding, `.th` and `.en` (same code) |
+| `lab-XX-*/*.py` | โปรแกรมที่รันได้จริงจาก terminal / Programs you run for real from a terminal |
 | `agentlab/` | Code ที่ทุก lab ใช้ร่วมกัน เช่น `get_llm()` / Helpers shared by all labs |
 | `.env.example` | แม่แบบการตั้งค่า คัดลอกเป็น `.env` / Settings template; copy to `.env` |
 
