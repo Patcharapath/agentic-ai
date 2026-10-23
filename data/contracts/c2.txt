@@ -1,0 +1,14 @@
+CLOUD DATA SERVICES AGREEMENT
+Agreement No. CDS-2026-118
+
+This Agreement is made on 3 November 2026 between DataWork Co., Ltd. (the "Customer") and SkyStore Pte. Ltd., Singapore (the "Provider").
+
+1. Services. The Provider will host the Customer's customer-relationship database, which contains the names, phone numbers and purchase histories of the Customer's clients, for 12 months.
+2. Fees. The fee is 18,000 THB per month (216,000 THB for the term).
+3. Service levels. The Provider guarantees 99.5% monthly availability and will respond to any reported incident within 2 hours.
+4. Payment. Invoices are payable within 15 days of the invoice date.
+5. Termination. Either party may terminate this Agreement by giving 30 days' written notice.
+6. Governing law. This Agreement is governed by the laws of Singapore.
+
+Signed for the Customer: Pimchanok Jaidee, Head of Data
+Signed for the Provider: Daniel Tan, Director

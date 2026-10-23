@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="th" data-lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>การวางแผนและการให้เหตุผล: ตรวจสัญญากับ policy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600&display=swap">
+<style>
+/* Shared tokens, language switching and reading typography for all course pages. */
+:root {
+  --ink: #0d1526;
+  --ink-2: #16213a;
+  --ink-3: #22304f;
+  --slide-fg: #eaf0ff;
+  --slide-dim: #9fb0d0;
+  --accent: #f6b93b;
+  --accent-2: #4fd1c5;
+  --paper: #fbf9f4;
+  --paper-2: #f3efe5;
+  --text: #1e2330;
+  --muted: #5d6577;
+  --line: #e2dccd;
+  --ex-bg: #e9f5f2;
+  --ex-line: #23897c;
+  --warn-bg: #fdf1dc;
+  --warn-line: #c9820a;
+  --link-bg: #ecf0fb;
+  --link-line: #4a63c4;
+  --code-bg: #182036;
+  --code-fg: #dbe6ff;
+  --ok: #1f9d6b;
+  --bad: #d24b4b;
+  --font-ui: "IBM Plex Sans Thai", "Noto Sans Thai", "Leelawadee UI", "Thonburi", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-read: "IBM Plex Sans Thai Looped", "IBM Plex Sans Thai", "Noto Sans Thai Looped", "Leelawadee UI", "Thonburi", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --topbar-h: 52px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { font-family: var(--font-ui); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+/* Language switching: every translated node carries lang="th" or lang="en". */
+html[data-lang="th"] body [lang="en"],
+html[data-lang="en"] body [lang="th"] { display: none !important; }
+
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Top bar (dark, shared by modules and labs) */
+.topbar {
+  height: var(--topbar-h); display: flex; align-items: center; gap: 12px;
+  padding: 0 14px; background: var(--ink); color: var(--slide-fg);
+  border-bottom: 1px solid var(--ink-3);
+}
+.brand { font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.brand b { color: var(--accent); font-weight: 700; }
+.chip {
+  font-size: .78rem; font-weight: 600; padding: 3px 9px; border-radius: 999px;
+  background: var(--ink-3); color: var(--slide-fg); white-space: nowrap;
+}
+.topbar .title { flex: 1; min-width: 0; font-size: .95rem; color: var(--slide-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tb-btn {
+  height: 34px; min-width: 34px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--ink-3);
+  background: transparent; color: var(--slide-fg); font-size: .85rem; white-space: nowrap;
+}
+.tb-btn:hover { background: var(--ink-2); }
+.seg { display: inline-flex; border: 1px solid var(--ink-3); border-radius: 8px; overflow: hidden; }
+.seg button { height: 32px; padding: 0 11px; border: 0; background: transparent; color: var(--slide-dim); font-size: .85rem; font-weight: 600; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: #231a04; }
+
+/* Reading typography (notes pane, lab guide body) */
+.prose { font-family: var(--font-read); font-size: 1.02rem; line-height: 1.8; overflow-wrap: anywhere; }
+.prose p { margin: 0 0 .8em; }
+.prose ul, .prose ol { margin: 0 0 .9em; padding-left: 1.4em; }
+.prose li { margin: .2em 0; }
+.prose h4 { font-family: var(--font-ui); font-size: 1rem; margin: 1.2em 0 .4em; }
+.prose a { color: var(--link-line); }
+.prose strong { font-weight: 600; }
+.prose code {
+  font-family: var(--font-mono); font-size: .88em; background: var(--paper-2);
+  border: 1px solid var(--line); border-radius: 4px; padding: .08em .35em;
+}
+.prose pre {
+  position: relative; background: var(--code-bg); color: var(--code-fg); border-radius: 8px;
+  padding: 14px 16px; overflow-x: auto; line-height: 1.55; margin: 0 0 1em;
+}
+.prose pre code { background: none; border: 0; padding: 0; color: inherit; font-size: .86rem; white-space: pre; }
+.prose kbd {
+  font-family: var(--font-mono); font-size: .82em; border: 1px solid #c9c2b0; border-bottom-width: 2px;
+  border-radius: 5px; padding: .05em .4em; background: #fff;
+}
+.prose table { border-collapse: collapse; width: 100%; margin: 0 0 1em; font-size: .94rem; line-height: 1.55; }
+.prose th, .prose td { border: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; overflow-wrap: break-word; }
+.prose th { background: var(--paper-2); font-family: var(--font-ui); font-weight: 600; }
+.table-wrap { overflow-x: auto; }
+
+/* Callouts. A Markdown blockquote is an example box. */
+.prose blockquote, .callout {
+  margin: 0 0 1em; padding: 10px 14px 10px 16px; border-left: 4px solid var(--ex-line);
+  background: var(--ex-bg); border-radius: 0 8px 8px 0;
+}
+.prose blockquote > :last-child, .callout > :last-child { margin-bottom: 0; }
+.prose blockquote::before, .callout::before {
+  display: block; font-family: var(--font-ui); font-size: .74rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--ex-line); margin-bottom: 2px;
+}
+html[data-lang="th"] .prose blockquote::before { content: "ตัวอย่าง"; }
+html[data-lang="en"] .prose blockquote::before { content: "Example"; }
+.callout.warn { border-color: var(--warn-line); background: var(--warn-bg); }
+.callout.warn::before { color: var(--warn-line); }
+html[data-lang="th"] .callout.warn::before { content: "ข้อควรระวัง"; }
+html[data-lang="en"] .callout.warn::before { content: "Watch out"; }
+.callout.link { border-color: var(--link-line); background: var(--link-bg); }
+.callout.link::before { color: var(--link-line); }
+html[data-lang="th"] .callout.link::before { content: "เชื่อมไปข้างหน้า"; }
+html[data-lang="en"] .callout.link::before { content: "Looking ahead"; }
+.callout.tip::before { color: var(--ex-line); }
+html[data-lang="th"] .callout.tip::before { content: "เคล็ดลับ"; }
+html[data-lang="en"] .callout.tip::before { content: "Tip"; }
+
+/* Lab guide layout: step list on the left, instructions on the right. */
+body { background: var(--paper); }
+.topbar { position: sticky; top: 0; z-index: 10; }
+.switches { display: flex; gap: 8px; align-items: center; }
+.switches .label { font-size: .75rem; color: var(--slide-dim); margin-right: -2px; }
+
+.lab { display: grid; grid-template-columns: 300px minmax(0, 1fr); align-items: start; }
+.steps-nav { position: sticky; top: var(--topbar-h); height: calc(100vh - var(--topbar-h)); overflow-y: auto; background: var(--paper-2); border-right: 1px solid var(--line); padding: 18px 14px; }
+.steps-nav h2 { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 6px 10px; }
+.steps-nav ol { list-style: none; margin: 0; padding: 0; }
+.steps-nav li { display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: start; padding: 7px 6px; border-radius: 8px; }
+.steps-nav li:hover { background: #fff; }
+.steps-nav input { margin-top: .32em; accent-color: var(--ex-line); width: 16px; height: 16px; }
+.steps-nav a { color: var(--text); text-decoration: none; font-size: .93rem; line-height: 1.45; }
+.steps-nav li.done a { color: var(--muted); text-decoration: line-through; }
+.lab-progress { margin: 14px 6px 0; font-size: .82rem; color: var(--muted); }
+.lab-progress .track { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin-top: 6px; }
+.lab-progress .track i { display: block; height: 100%; width: 0; background: var(--ex-line); transition: width .25s; }
+
+.lab-main { max-width: 54rem; padding: 34px 42px 90px; }
+.lab-hero { margin-bottom: 26px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+.lab-hero .kicker { font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ex-line); }
+.lab-hero h1 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.2; margin: 6px 0 8px; }
+.lab-hero .subtitle { font-size: 1.1rem; color: var(--muted); margin: 0 0 14px; line-height: 1.6; }
+.lab-hero .meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.lab-hero .meta .chip { background: var(--ink); }
+
+.step { padding: 24px 0 8px; border-bottom: 1px solid var(--line); scroll-margin-top: calc(var(--topbar-h) + 10px); }
+.step > header { display: flex; gap: 14px; align-items: baseline; margin-bottom: 10px; }
+.step .n { flex: none; width: 2.1rem; height: 2.1rem; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--accent); font-weight: 700; font-size: .95rem; }
+.step h2 { font-size: 1.35rem; line-height: 1.35; margin: 0; flex: 1; }
+.step .time { font-size: .8rem; color: var(--muted); white-space: nowrap; }
+.step .prose { padding-left: calc(2.1rem + 14px); }
+
+/* OS / IDE specific blocks */
+html[data-os="mac"] .os-win, html[data-os="win"] .os-mac,
+html[data-ide="vscode"] .ide-antigravity, html[data-ide="antigravity"] .ide-vscode { display: none !important; }
+.only { border-left: 3px solid var(--line); padding-left: 14px; margin-bottom: 1em; }
+.only::before { display: block; font-family: var(--font-ui); font-size: .72rem; font-weight: 700; letter-spacing: .08em; color: var(--muted); margin-bottom: 4px; }
+.only.os-mac::before { content: "macOS"; }
+.only.os-win::before { content: "WINDOWS"; }
+.only.ide-vscode::before { content: "VS CODE"; }
+.only.ide-antigravity::before { content: "ANTIGRAVITY"; }
+.only > :last-child { margin-bottom: 0; }
+
+.copy { position: absolute; top: 8px; right: 8px; height: 26px; padding: 0 9px; border-radius: 6px; border: 1px solid #3a4666; background: #232d49; color: var(--code-fg); font-size: .72rem; font-family: var(--font-ui); opacity: .75; }
+.copy:hover { opacity: 1; }
+.prose pre { padding-right: 70px; }
+.out { background: #10151f !important; color: #b9c4d9 !important; border-left: 3px solid var(--ex-line); }
+
+@media (max-width: 900px) {
+  .lab { grid-template-columns: 1fr; }
+  .steps-nav { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+  .lab-main { padding: 24px 18px 70px; }
+  .step .prose { padding-left: 0; }
+  .topbar .title { display: none; }
+  .switches .label { display: none; }
+}
+@media print {
+  .topbar, .steps-nav, .copy { display: none; }
+  .lab { display: block; }
+}
+
+/* Fill-in forms on activity pages */
+.canvas { width: 100%; }
+.canvas th small { display: block; font-weight: 400; color: var(--muted); line-height: 1.4; margin-top: 2px; }
+.canvas td { background: #fff; }
+
+</style>
+</head>
+<body class="">
+<header class="topbar"><span class="brand">Agentic <b>AI</b></span><span class="chip">Lab 3</span><span class="title"><span lang="th">การวางแผนและการให้เหตุผล: ตรวจสัญญากับ policy</span><span lang="en">Planning and reasoning: reviewing contracts against policy</span></span><div class="switches"><span class="label">OS</span><div class="seg" role="group" aria-label="Operating system"><button type="button" data-set-os="mac">macOS</button><button type="button" data-set-os="win">Windows</button></div><div class="seg" role="group" aria-label="Language"><button type="button" data-set-lang="th">ไทย</button><button type="button" data-set-lang="en">EN</button></div></div></header><div class="lab"><nav class="steps-nav"><h2><span lang="th">ขั้นตอน</span><span lang="en">Steps</span></h2><ol><li><input type="checkbox" value="prepare" aria-label="done"><a href="#prepare"><span lang="th">อัปเดต repository</span><span lang="en">Update the repository</span></a></li><li><input type="checkbox" value="open" aria-label="done"><a href="#open"><span lang="th">เปิด notebook และบันทึกเป็นไฟล์ของคุณ</span><span lang="en">Open the notebook and save your own copy</span></a></li><li><input type="checkbox" value="core" aria-label="done"><a href="#core"><span lang="th">Core: ส่วนที่ 1–7</span><span lang="en">Core: parts 1–7</span></a></li><li><input type="checkbox" value="stretch" aria-label="done"><a href="#stretch"><span lang="th">Stretch: ReAct และ self-consistency</span><span lang="en">Stretch: ReAct and self-consistency</span></a></li><li><input type="checkbox" value="program" aria-label="done"><a href="#program"><span lang="th">รัน contract_review.py บน terminal</span><span lang="en">Run contract_review.py from the terminal</span></a></li><li><input type="checkbox" value="submit" aria-label="done"><a href="#submit"><span lang="th">สิ่งที่ต้องส่ง และการแก้ปัญหา</span><span lang="en">What to hand in, and troubleshooting</span></a></li></ol><div class="lab-progress"><span lang="th">ทำแล้ว</span><span lang="en">Done</span> <span class="n"></span><div class="track"><i></i></div></div></nav><main class="lab-main"><div class="lab-hero"><div class="kicker">Lab 3</div><h1><span lang="th">การวางแผนและการให้เหตุผล: ตรวจสัญญากับ policy</span><span lang="en">Planning and reasoning: reviewing contracts against policy</span></h1><p class="subtitle"><span lang="th">เทียบ classical planner กับ LLM planner แล้วเทียบ ReAct, Plan-and-Execute และ Reflection บนงานตรวจสัญญาจริง</span><span lang="en">Compare a classical planner with an LLM planner, then ReAct, Plan-and-Execute and Reflection on real contract review</span></p><div class="meta"><span class="chip"><span lang="th">70 นาทีใน class</span><span lang="en">70 min in class</span></span><span class="chip"><span lang="th">ต่อจาก Module 3</span><span lang="en">Follows Module 3</span></span><span class="chip"><span lang="th">Core 7 ส่วน + Stretch 2 ส่วน</span><span lang="en">7 Core parts + 2 Stretch parts</span></span></div></div><div class="prose"><div lang="th"><p>Lab นี้ตอบคำถามสองข้อด้วยการทดลอง: LLM วางแผนเก่งแค่ไหนเมื่อเทียบกับ search และในงานจริงที่ต้องตรวจให้ครบ รูปแบบการวางแผนแบบไหนแม่นที่สุด และแลกกับต้นทุนเท่าไร</p>
+<p><strong>เมื่อจบ lab คุณจะสามารถ</strong></p>
+<ul>
+<li>เขียน breadth-first search สำหรับปัญหาการวางแผนที่มี action แบบมีเงื่อนไขและผล</li>
+<li>ใช้ตัวตรวจแผนกับแผนที่ LLM เสนอ และอธิบายข้อจำกัดของ LLM ในการวางแผน</li>
+<li>ใช้ chain-of-thought ใน structured output และวัดผลของมัน</li>
+<li>ประกอบ agent แบบ Plan-and-Execute เป็น graph ด้วย LangGraph</li>
+<li>เปรียบเทียบรูปแบบการวางแผนด้วย precision, recall, F1, จำนวน LLM call และเวลา</li>
+</ul></div><div lang="en"><p>This lab answers two questions by experiment: how good is an LLM at planning compared with search, and on real work that must be complete, which planning pattern is most accurate and at what cost?</p>
+<p><strong>By the end you will be able to</strong></p>
+<ul>
+<li>Write breadth-first search for a planning problem with conditional actions and effects</li>
+<li>Check the plans an LLM proposes, and explain the LLM's limits as a planner</li>
+<li>Use chain-of-thought inside structured output and measure its effect</li>
+<li>Assemble a Plan-and-Execute agent as a graph with LangGraph</li>
+<li>Compare planning patterns by precision, recall, F1, LLM calls and time</li>
+</ul></div></div><section class="step" id="prepare"><header><span class="n">1</span><h2><span lang="th">อัปเดต repository</span><span lang="en">Update the repository</span></h2><span class="time"><span lang="th">ก่อน class</span><span lang="en">Before class</span></span></header><div class="prose"><div lang="th"><p>เปิดโฟลเดอร์ <code>agentic-ai</code> ใน editor แล้วรันใน terminal:</p>
+<pre><code class="language-bash">git pull
+uv sync
+uv run python lab-00-setup/check_setup.py
+</code></pre>
+<p>Lab นี้ไม่มี package ใหม่ แต่ควรรัน <code>uv sync</code> หลัง <code>git pull</code> ทุกครั้ง ถ้าเครื่องไม่มี uv ให้ใช้คำสั่งของ pip ตามตารางในคู่มือ Lab 0 ขั้นที่ 2 ข้อ 4</p>
+<p>ไฟล์ใหม่ของ lab นี้:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Path</th>
+<th>เนื้อหา</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data/contracts/</code></td>
+<td>สัญญา 5 ฉบับ ไทยและอังกฤษ (<code>c1.txt</code> ถึง <code>c5.txt</code>)</td>
+</tr>
+<tr>
+<td><code>data/policy.json</code></td>
+<td>Policy ของบริษัท 8 ข้อ และขอบเขตของแต่ละข้อ</td>
+</tr>
+<tr>
+<td><code>data/contracts_labels.csv</code></td>
+<td>เฉลย: กฎที่ใช้บังคับและกฎที่ถูกฝ่าฝืนของแต่ละสัญญา</td>
+</tr>
+<tr>
+<td><code>agentlab/contracts.py</code></td>
+<td>โหลดข้อมูล, tools สำหรับ ReAct และการให้คะแนน</td>
+</tr>
+</tbody>
+</table></div>
+<div class="callout warn">
+<p>Lab นี้เรียก LLM มากที่สุดในวิชาจนถึงตอนนี้ ส่วนที่ 3–6 ใช้เวลารวมราว 8–12 นาทีบนเครื่องทดสอบ ปิดโปรแกรมอื่นที่ไม่จำเป็นก่อนเริ่ม และเสียบสายชาร์จ</p>
+</div></div><div lang="en"><p>Open the <code>agentic-ai</code> folder in your editor and run in the terminal:</p>
+<pre><code class="language-bash">git pull
+uv sync
+uv run python lab-00-setup/check_setup.py
+</code></pre>
+<p>This lab adds no packages, but always run <code>uv sync</code> after <code>git pull</code>. If your machine has no uv, use the pip commands from the table in the Lab 0 guide, step 2, part 4.</p>
+<p>New files in this lab:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data/contracts/</code></td>
+<td>5 contracts in Thai and English (<code>c1.txt</code> to <code>c5.txt</code>)</td>
+</tr>
+<tr>
+<td><code>data/policy.json</code></td>
+<td>The company policy's 8 rules and the scope of each</td>
+</tr>
+<tr>
+<td><code>data/contracts_labels.csv</code></td>
+<td>The answer key: the rules that apply to and are broken by each contract</td>
+</tr>
+<tr>
+<td><code>agentlab/contracts.py</code></td>
+<td>Data loading, tools for ReAct, and scoring</td>
+</tr>
+</tbody>
+</table></div>
+<div class="callout warn">
+<p>This lab calls the LLM more than any lab so far. Parts 3–6 take about 8–12 minutes in all on the test machine. Close programs you do not need before starting, and plug in your charger.</p>
+</div></div></div></section><section class="step" id="open"><header><span class="n">2</span><h2><span lang="th">เปิด notebook และบันทึกเป็นไฟล์ของคุณ</span><span lang="en">Open the notebook and save your own copy</span></h2><span class="time"><span lang="th">2 นาที</span><span lang="en">2 min</span></span></header><div class="prose"><div lang="th"><ol>
+<li>เปิด <code>lab-03-planning/lab3_planning.th.ipynb</code> (ฉบับอังกฤษคือ <code>.en.ipynb</code> code เหมือนกัน)</li>
+<li>บันทึกเป็น <code>lab3_planning.mine.ipynb</code> ด้วย <strong>File &gt; Save As</strong></li>
+<li>เลือก kernel <code>.venv</code> ที่มุมขวาบน</li>
+</ol></div><div lang="en"><ol>
+<li>Open <code>lab-03-planning/lab3_planning.en.ipynb</code> (the Thai version is <code>.th.ipynb</code>; the code is the same).</li>
+<li>Save it as <code>lab3_planning.mine.ipynb</code> with <strong>File &gt; Save As</strong>.</li>
+<li>Choose the <code>.venv</code> kernel at the top right.</li>
+</ol></div></div></section><section class="step" id="core"><header><span class="n">3</span><h2><span lang="th">Core: ส่วนที่ 1–7</span><span lang="en">Core: parts 1–7</span></h2><span class="time"><span lang="th">63 นาที</span><span lang="en">63 min</span></span></header><div class="prose"><div lang="th"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ส่วน</th>
+<th>สิ่งที่ทำ</th>
+<th>เวลา</th>
+<th>LLM ใช้เวลาราว</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>เขียน <code>applicable</code> และ <code>apply</code> ให้ breadth-first search</td>
+<td>10 นาที</td>
+<td>ไม่ใช้</td>
+</tr>
+<tr>
+<td>2</td>
+<td>LLM วางแผน ตรวจด้วย <code>validate</code> และลองชื่อที่ไม่มีความหมาย</td>
+<td>10 นาที</td>
+<td>30 วินาที</td>
+</tr>
+<tr>
+<td>3</td>
+<td>โจทย์ตรวจสัญญา และวิธีถามครั้งเดียว</td>
+<td>5 นาที</td>
+<td>15 วินาที</td>
+</tr>
+<tr>
+<td>4</td>
+<td>ตัดสินก่อน หรือให้เหตุผลก่อน (และลอง thinking ถ้ามีเวลา)</td>
+<td>8 นาที</td>
+<td>1–2.5 นาที</td>
+</tr>
+<tr>
+<td>5</td>
+<td>เติม <code>plan_rules</code> และ <code>route</code> แล้วรัน Plan-and-Execute</td>
+<td>15 นาที</td>
+<td>3.5–5 นาที</td>
+</tr>
+<tr>
+<td>6</td>
+<td>เขียนคำสั่งของผู้ตรวจ แล้วรัน Reflection</td>
+<td>10 นาที</td>
+<td>2–4.5 นาที</td>
+</tr>
+<tr>
+<td>7</td>
+<td>ตารางเปรียบเทียบ</td>
+<td>5 นาที</td>
+<td>ไม่ใช้</td>
+</tr>
+</tbody>
+</table></div>
+<div class="callout tip">
+<p>ระหว่างที่ cell ของส่วนที่ 5 และ 6 รัน ให้อ่านคำอธิบายของส่วนถัดไปไว้ก่อน ถ้าเครื่องช้ามาก แก้ <code>CLASS_SET = ["c1", "c5"]</code> หลังรันส่วนที่ 3 เพื่อตรวจแค่ 2 ฉบับ (ต้องรันส่วนที่ 3 ใหม่ด้วย เพื่อให้ตารางเปรียบเทียบใช้สัญญาชุดเดียวกัน)</p>
+</div></div><div lang="en"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Part</th>
+<th>What you do</th>
+<th>Time</th>
+<th>LLM time, roughly</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Write <code>applicable</code> and <code>apply</code> for breadth-first search</td>
+<td>10 min</td>
+<td>None</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Have the LLM plan, check it with <code>validate</code>, and try meaningless names</td>
+<td>10 min</td>
+<td>30 seconds</td>
+</tr>
+<tr>
+<td>3</td>
+<td>The contract task, and the single-call approach</td>
+<td>5 min</td>
+<td>15 seconds</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Answer first or reason first (and try thinking if there is time)</td>
+<td>8 min</td>
+<td>1–2.5 minutes</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Fill in <code>plan_rules</code> and <code>route</code>, then run Plan-and-Execute</td>
+<td>15 min</td>
+<td>3.5–5 minutes</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Write the reviewer's instruction, then run Reflection</td>
+<td>10 min</td>
+<td>2–4.5 minutes</td>
+</tr>
+<tr>
+<td>7</td>
+<td>The comparison table</td>
+<td>5 min</td>
+<td>None</td>
+</tr>
+</tbody>
+</table></div>
+<div class="callout tip">
+<p>While the cells of parts 5 and 6 run, read ahead to the next part's explanation. If your machine is very slow, set <code>CLASS_SET = ["c1", "c5"]</code> after part 3 to review only 2 contracts (run part 3 again too, so the comparison table uses the same contracts).</p>
+</div></div></div></section><section class="step" id="stretch"><header><span class="n">4</span><h2><span lang="th">Stretch: ReAct และ self-consistency</span><span lang="en">Stretch: ReAct and self-consistency</span></h2><span class="time"><span lang="th">ถ้ามีเวลา</span><span lang="en">If time allows</span></span></header><div class="prose"><div lang="th"><p>ส่วนที่ 8 เพิ่มสองแถวในตารางเปรียบเทียบ: ReAct จาก Lab 2 (ราว 3–5 นาที) และ self-consistency ที่ถามแบบครั้งเดียว 3 รอบแล้วโหวต (ราว 40 วินาที) คิดก่อนรันว่าแต่ละวิธีน่าจะได้ precision และ recall เท่าไร แล้วเทียบกับผลจริง</p></div><div lang="en"><p>Part 8 adds two rows to the comparison table: ReAct from Lab 2 (about 3–5 minutes) and self-consistency, which asks the single-call question 3 times and votes (about 40 seconds). Before running, predict each one's precision and recall, then compare with the real result.</p></div></div></section><section class="step" id="program"><header><span class="n">5</span><h2><span lang="th">รัน contract_review.py บน terminal</span><span lang="en">Run contract_review.py from the terminal</span></h2><span class="time"><span lang="th">15 นาที หลังทำ notebook</span><span lang="en">15 min, after the notebook</span></span></header><div class="prose"><div lang="th"><p><code>contract_review.py</code> รันรูปแบบเหล่านี้กับสัญญาครบ 5 ฉบับ และบันทึกเหตุผลของการตรวจกฎทุกข้อไว้ให้คนตรวจย้อนได้ <strong>ทำ notebook ให้จบก่อนเปิดไฟล์นี้</strong> เพราะในไฟล์มีคำตอบของ <code># TODO</code></p>
+<h4>1. เปิด terminal ในโฟลเดอร์ agentic-ai</h4>
+<p>ใน editor เลือกเมนู <strong>Terminal &gt; New Terminal</strong> แล้วรัน <code>ls</code> ต้องเห็น <code>pyproject.toml</code>, <code>data</code> และ <code>lab-03-planning</code> ถ้าไม่เห็น ให้ <code>cd</code> ไปที่โฟลเดอร์ <code>agentic-ai</code> ก่อน</p>
+<h4>2. รันโปรแกรม</h4>
+<pre><code class="language-bash">uv run python lab-03-planning/contract_review.py
+</code></pre>
+<p>ถ้าเครื่องของคุณไม่มี uv:</p>
+<div class="only os-mac">
+<pre><code class="language-bash">.venv/bin/python lab-03-planning/contract_review.py
+</code></pre>
+</div>
+<div class="only os-win">
+<pre><code class="language-powershell">.venv\Scripts\python lab-03-planning\contract_review.py
+</code></pre>
+</div>
+<p>ค่าเริ่มต้นคือ Plan-and-Execute กับสัญญา 5 ฉบับ ใช้เวลาราว 4–6 นาที</p>
+<h4>3. ผลที่ควรเห็น</h4>
+<pre><code class="language-text">== plan on 5 contracts
+   c1  R2, R3
+   c2  R5, R6, R7
+   c3  R8
+   c4  R4
+   c5  (complies)
+
+plan: 34 LLM calls, 273s  |  precision 1.00  recall 1.00  F1 1.00  (tp 7, fp 0, fn 0)
+Wrote .../agentic-ai/out/contract_review/findings.csv and checks.csv
+</code></pre>
+<p>แต่ละบรรทัดคือสัญญาหนึ่งฉบับกับกฎที่พบว่าฝ่าฝืน บรรทัดสรุปเทียบกับเฉลยใน <code>data/contracts_labels.csv</code> ผลของคุณอาจต่างจากตัวอย่าง โดยเฉพาะเวลา</p>
+<p>ผลลัพธ์อยู่ในโฟลเดอร์ <code>out/contract_review/</code>:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ไฟล์</th>
+<th>เนื้อหา</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>findings.csv</code></td>
+<td>กฎที่ฝ่าฝืนของแต่ละสัญญา แยกตามรูปแบบ</td>
+</tr>
+<tr>
+<td><code>checks.csv</code></td>
+<td>การตรวจกฎทุกข้อของ Plan-and-Execute: ผ่านหรือไม่ และเหตุผลของ model</td>
+</tr>
+</tbody>
+</table></div>
+<h4>4. ตัวเลือกของโปรแกรม</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ตัวเลือก</th>
+<th>ทำอะไร</th>
+<th>ค่าเริ่มต้น</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FOLDER</code></td>
+<td>โฟลเดอร์ของสัญญา <code>.txt</code></td>
+<td><code>data/contracts</code></td>
+</tr>
+<tr>
+<td><code>--pattern plan</code></td>
+<td>Plan-and-Execute</td>
+<td>ใช้ค่านี้</td>
+</tr>
+<tr>
+<td><code>--pattern single</code> / <code>reflect</code></td>
+<td>ถามครั้งเดียว / ร่างแล้วตรวจ</td>
+<td></td>
+</tr>
+<tr>
+<td><code>--pattern all</code></td>
+<td>รันทั้งสามแบบแล้วเทียบ (ราว 10–15 นาที)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>--contracts c1 c5</code></td>
+<td>ตรวจเฉพาะบางฉบับ</td>
+<td>ทุกฉบับ</td>
+</tr>
+<tr>
+<td><code>--out PATH</code></td>
+<td>โฟลเดอร์สำหรับผลลัพธ์</td>
+<td><code>out/contract_review</code></td>
+</tr>
+<tr>
+<td><code>--show-graph</code></td>
+<td>พิมพ์ graph ของ Plan-and-Execute แล้วจบ</td>
+<td></td>
+</tr>
+<tr>
+<td><code>--help</code></td>
+<td>แสดงตัวเลือกทั้งหมด</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<h4>5. ลองทำตามลำดับนี้</h4>
+<ol>
+<li>รัน <code>--show-graph</code> แล้วนำข้อความไปวางใน <a href="https://mermaid.live">https://mermaid.live</a> เพื่อดู graph เป็นภาพ</li>
+<li>รัน <code>--pattern single --contracts c1 c5</code> (ราว 15 วินาที) แล้วเทียบกับผลของ Plan-and-Execute</li>
+<li>เปิด <code>out/contract_review/checks.csv</code> ใน Excel แล้วอ่านเหตุผลของการตรวจที่ไม่ผ่าน</li>
+<li>เขียนสัญญาของคุณเองหนึ่งฉบับเป็นไฟล์ <code>.txt</code> ในโฟลเดอร์ใหม่ แล้วรันกับโฟลเดอร์นั้น</li>
+</ol>
+<h4>6. หยุดโปรแกรม และข้อผิดพลาดที่พบบ่อย</h4>
+<p>กด <kbd>Ctrl</kbd>+<kbd>C</kbd> เพื่อหยุด ผลของสัญญาที่ตรวจเสร็จแล้วยังถูกเขียนลงไฟล์</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ข้อความ</th>
+<th>สาเหตุและวิธีแก้</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>error: no such contract(s): ...</code></td>
+<td>รหัสใน <code>--contracts</code> ผิด ข้อความบอกรหัสที่มีอยู่</td>
+</tr>
+<tr>
+<td><code>unchecked: R...</code> ในบางบรรทัด</td>
+<td>Model ตอบไม่สำเร็จแม้ลองใหม่แล้ว กฎข้อนั้นต้องให้คนตรวจ ไม่ได้ถูกนับว่าผ่าน</td>
+</tr>
+<tr>
+<td><code>error: could not start the LLM: ...</code></td>
+<td>รัน <code>check_setup.py</code> เพื่อดูว่า provider ไหนมีปัญหา</td>
+</tr>
+<tr>
+<td>ช้ามาก</td>
+<td>ใช้ <code>--contracts</code> ตรวจทีละไม่กี่ฉบับ และปิดโปรแกรมอื่น</td>
+</tr>
+</tbody>
+</table></div>
+<h4>7. สิ่งที่โปรแกรมมีเพิ่มจาก notebook</h4>
+<p>ไฟล์ <code>contract_review.th.md</code> อธิบายทีละส่วนว่า code ที่เพิ่มจาก notebook มีไว้ทำอะไร สรุปสั้นๆ คือ:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ใน notebook</th>
+<th>ใน <code>contract_review.py</code></th>
+<th>ทำไม</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ผลอยู่ใน dict</td>
+<td><code>checks.csv</code> บันทึกเหตุผลของการตรวจทุกข้อ</td>
+<td>คนที่ตรวจต้องเห็นว่าทำไมสัญญาถูกทักท้วง</td>
+</tr>
+<tr>
+<td>ถ้าตรวจไม่สำเร็จ cell พัง</td>
+<td>กฎที่ตรวจไม่ได้ถูกรายงานเป็น <code>unchecked</code></td>
+<td>ไม่นับว่าผ่านโดยเงียบๆ</td>
+</tr>
+<tr>
+<td>แต่ละรูปแบบอยู่คนละ cell</td>
+<td><code>--pattern</code> เลือกรูปแบบ</td>
+<td>เลือกระหว่างต้นทุนกับความแม่นยำได้ด้วยคำสั่งเดียว</td>
+</tr>
+<tr>
+<td>ตรวจ 3 ฉบับ</td>
+<td>ตรวจทั้งโฟลเดอร์ หรือเลือกด้วย <code>--contracts</code></td>
+<td>ใช้กับสัญญาจริงได้</td>
+</tr>
+</tbody>
+</table></div></div><div lang="en"><p><code>contract_review.py</code> runs these patterns on all 5 contracts and saves the reasoning behind every rule check for a person to review. <strong>Finish the notebook before opening this file</strong>, because it contains the answers to the <code># TODO</code> items.</p>
+<h4>1. Open a terminal in the agentic-ai folder</h4>
+<p>In the editor choose <strong>Terminal &gt; New Terminal</strong> and run <code>ls</code>. You should see <code>pyproject.toml</code>, <code>data</code> and <code>lab-03-planning</code>. If not, <code>cd</code> to the <code>agentic-ai</code> folder first.</p>
+<h4>2. Run the program</h4>
+<pre><code class="language-bash">uv run python lab-03-planning/contract_review.py
+</code></pre>
+<p>If your machine has no uv:</p>
+<div class="only os-mac">
+<pre><code class="language-bash">.venv/bin/python lab-03-planning/contract_review.py
+</code></pre>
+</div>
+<div class="only os-win">
+<pre><code class="language-powershell">.venv\Scripts\python lab-03-planning\contract_review.py
+</code></pre>
+</div>
+<p>The default is Plan-and-Execute on 5 contracts, taking about 4–6 minutes.</p>
+<h4>3. What you should see</h4>
+<pre><code class="language-text">== plan on 5 contracts
+   c1  R2, R3
+   c2  R5, R6, R7
+   c3  R8
+   c4  R4
+   c5  (complies)
+
+plan: 34 LLM calls, 273s  |  precision 1.00  recall 1.00  F1 1.00  (tp 7, fp 0, fn 0)
+Wrote .../agentic-ai/out/contract_review/findings.csv and checks.csv
+</code></pre>
+<p>Each line is one contract and the rules found broken. The summary line compares with the answer key in <code>data/contracts_labels.csv</code>. Your results may differ from the sample, especially the time.</p>
+<p>The results are in the <code>out/contract_review/</code> folder:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>File</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>findings.csv</code></td>
+<td>The rules each contract breaks, by pattern</td>
+</tr>
+<tr>
+<td><code>checks.csv</code></td>
+<td>Every rule check made by Plan-and-Execute: pass or fail, and the model's reasoning</td>
+</tr>
+</tbody>
+</table></div>
+<h4>4. The program's options</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>What it does</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FOLDER</code></td>
+<td>The folder of contract <code>.txt</code> files</td>
+<td><code>data/contracts</code></td>
+</tr>
+<tr>
+<td><code>--pattern plan</code></td>
+<td>Plan-and-Execute</td>
+<td>This one</td>
+</tr>
+<tr>
+<td><code>--pattern single</code> / <code>reflect</code></td>
+<td>Single call / draft then review</td>
+<td></td>
+</tr>
+<tr>
+<td><code>--pattern all</code></td>
+<td>Run all three and compare (about 10–15 minutes)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>--contracts c1 c5</code></td>
+<td>Review only some contracts</td>
+<td>All</td>
+</tr>
+<tr>
+<td><code>--out PATH</code></td>
+<td>Folder for the results</td>
+<td><code>out/contract_review</code></td>
+</tr>
+<tr>
+<td><code>--show-graph</code></td>
+<td>Print the Plan-and-Execute graph and stop</td>
+<td></td>
+</tr>
+<tr>
+<td><code>--help</code></td>
+<td>Show every option</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<h4>5. Try these in order</h4>
+<ol>
+<li>Run <code>--show-graph</code> and paste the text into <a href="https://mermaid.live">https://mermaid.live</a> to see the graph as a picture</li>
+<li>Run <code>--pattern single --contracts c1 c5</code> (about 15 seconds) and compare with Plan-and-Execute</li>
+<li>Open <code>out/contract_review/checks.csv</code> in Excel and read the reasoning for the checks that failed</li>
+<li>Write a contract of your own as a <code>.txt</code> file in a new folder, and run the program on that folder</li>
+</ol>
+<h4>6. Stopping the program, and common errors</h4>
+<p>Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop. Results for contracts already reviewed are still written to the files.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Message</th>
+<th>Cause and fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>error: no such contract(s): ...</code></td>
+<td>An ID given to <code>--contracts</code> is wrong. The message lists the IDs that exist</td>
+</tr>
+<tr>
+<td><code>unchecked: R...</code> on some lines</td>
+<td>The model failed to answer even after a retry. A person must check that rule; it is not counted as passing</td>
+</tr>
+<tr>
+<td><code>error: could not start the LLM: ...</code></td>
+<td>Run <code>check_setup.py</code> to see which provider has a problem</td>
+</tr>
+<tr>
+<td>Very slow</td>
+<td>Use <code>--contracts</code> to review a few at a time, and close other programs</td>
+</tr>
+</tbody>
+</table></div>
+<h4>7. What the program has that the notebook did not</h4>
+<p><code>contract_review.en.md</code> explains part by part what the code added to the notebook is for. In short:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>In the notebook</th>
+<th>In <code>contract_review.py</code></th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Results in a dict</td>
+<td><code>checks.csv</code> records the reasoning for every check</td>
+<td>The person reviewing must see why a contract was flagged</td>
+</tr>
+<tr>
+<td>A failed check breaks the cell</td>
+<td>Rules that could not be checked are reported as <code>unchecked</code></td>
+<td>Nothing silently counts as passing</td>
+</tr>
+<tr>
+<td>Each pattern in its own cell</td>
+<td><code>--pattern</code> chooses the pattern</td>
+<td>Choose between cost and accuracy with one command</td>
+</tr>
+<tr>
+<td>3 contracts</td>
+<td>A whole folder, or a selection with <code>--contracts</code></td>
+<td>Usable on real contracts</td>
+</tr>
+</tbody>
+</table></div></div></div></section><section class="step" id="submit"><header><span class="n">6</span><h2><span lang="th">สิ่งที่ต้องส่ง และการแก้ปัญหา</span><span lang="en">What to hand in, and troubleshooting</span></h2><span class="time"><span lang="th">หลัง class</span><span lang="en">After class</span></span></header><div class="prose"><div lang="th"><h4>ส่งใน Moodle</h4>
+<ol>
+<li>ภาพตารางเปรียบเทียบจากส่วนที่ 7</li>
+<li>คำตอบของคำถาม 4 ข้อท้าย notebook ข้อละ 2–3 ประโยค</li>
+<li><strong>Project milestone 3:</strong> graph การทำงานของ agent ในโปรเจกต์ของกลุ่ม ระบุว่าขั้นไหน LLM ทำ ขั้นไหน code ทำ และจุดที่มีการตรวจหรือ reflection</li>
+</ol>
+<h4>ปัญหาที่พบบ่อย</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>อาการ</th>
+<th>วิธีแก้</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ส่วนที่ 1 ขึ้น <code>no plan found after exploring 1 states</code></td>
+<td>ยังไม่ได้เขียน <code>applicable</code> และ <code>apply</code></td>
+</tr>
+<tr>
+<td>ส่วนที่ 5 ได้ recall 0 และ LLM call แค่ 3</td>
+<td>ยังไม่ได้เขียน <code>route</code> graph จึงไป <code>report</code> ทันทีโดยไม่ตรวจกฎเลย</td>
+</tr>
+<tr>
+<td>ส่วนที่ 5 พลาดกฎ R3, R4 หรือ R5</td>
+<td>ยังเติมเงื่อนไขใน <code>plan_rules</code> ไม่ครบ</td>
+</tr>
+<tr>
+<td>Cell ค้างนานเกินคาดหลายเท่า</td>
+<td>กด Interrupt แล้วรัน <code>release_model()</code> ใน cell ใหม่ จากนั้นรันอีกครั้ง</td>
+</tr>
+<tr>
+<td>ส่วนที่ 4 (thinking) ได้ <code>answer: None</code></td>
+<td>Model คิดไม่จบภายในเพดาน token ลองรันอีกครั้ง หรือข้ามได้ เป็นส่วนไม่บังคับ</td>
+</tr>
+<tr>
+<td><code>OutputParserException</code></td>
+<td>Model สร้าง JSON ไม่สมบูรณ์สองครั้งติด รัน cell นั้นอีกครั้ง</td>
+</tr>
+</tbody>
+</table></div></div><div lang="en"><h4>Hand in on Moodle</h4>
+<ol>
+<li>A screenshot of the comparison table from part 7</li>
+<li>Your answers to the 4 questions at the end of the notebook, 2–3 sentences each</li>
+<li><strong>Project milestone 3:</strong> your group's agent workflow as a graph, marking which steps the LLM does, which code does, and where checks or reflection happen</li>
+</ol>
+<h4>Common problems</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Part 1 says <code>no plan found after exploring 1 states</code></td>
+<td>You have not written <code>applicable</code> and <code>apply</code> yet</td>
+</tr>
+<tr>
+<td>Part 5 gives recall 0 with only 3 LLM calls</td>
+<td>You have not written <code>route</code>, so the graph goes straight to <code>report</code> without checking any rule</td>
+</tr>
+<tr>
+<td>Part 5 misses rules R3, R4 or R5</td>
+<td>The conditions in <code>plan_rules</code> are not all filled in</td>
+</tr>
+<tr>
+<td>A cell takes many times longer than expected</td>
+<td>Press Interrupt, run <code>release_model()</code> in a new cell, then run it again</td>
+</tr>
+<tr>
+<td>Part 4 (thinking) shows <code>answer: None</code></td>
+<td>The model did not finish thinking within the token cap. Run it again, or skip it; it is optional</td>
+</tr>
+<tr>
+<td><code>OutputParserException</code></td>
+<td>The model produced incomplete JSON twice in a row. Run that cell again</td>
+</tr>
+</tbody>
+</table></div></div></div></section></main></div>
+<script>window.COURSE = {"id": "lab-03", "title": {"th": "การวางแผนและการให้เหตุผล: ตรวจสัญญากับ policy", "en": "Planning and reasoning: reviewing contracts against policy"}, "defaultLang": "th", "passMark": 60};</script>
+<script>
+/* Lab guide runtime: language / OS / IDE switches, copy buttons, step checklist. */
+(function () {
+  "use strict";
+  var META = window.COURSE || {};
+  var root = document.documentElement;
+  var KEY = "agentic-ai:" + (META.id || "lab");
+  var $$ = function (sel, el) { return Array.prototype.slice.call((el || document).querySelectorAll(sel)); };
+
+  var state = { l: META.defaultLang || "th", os: /Win/i.test(navigator.platform || navigator.userAgent) ? "win" : "mac", ide: "vscode", done: {} };
+  try {
+    var saved = JSON.parse(window.localStorage.getItem(KEY) || "null");
+    if (saved && typeof saved === "object") { for (var k in saved) state[k] = saved[k]; }
+  } catch (e) { /* storage unavailable or corrupt */ }
+  var p = new URLSearchParams(window.location.search).get("lang");
+  if (p === "th" || p === "en") state.l = p;
+
+  function save() { try { window.localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignore */ } }
+
+  function paint() {
+    root.setAttribute("data-lang", state.l);
+    root.setAttribute("lang", state.l);
+    root.setAttribute("data-os", state.os);
+    root.setAttribute("data-ide", state.ide);
+    $$("[data-set-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-set-lang") === state.l)); });
+    $$("[data-set-os]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-set-os") === state.os)); });
+    $$("[data-set-ide]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-set-ide") === state.ide)); });
+    if (META.title && META.title[state.l]) document.title = META.title[state.l];
+    var boxes = $$(".steps-nav input"), n = 0;
+    boxes.forEach(function (b) {
+      var on = !!state.done[b.value];
+      b.checked = on; if (on) n++;
+      b.parentNode.classList.toggle("done", on);
+    });
+    var bar = document.querySelector(".lab-progress .track i");
+    if (bar) bar.style.width = (boxes.length ? Math.round((n / boxes.length) * 100) : 0) + "%";
+    var cnt = document.querySelector(".lab-progress .n");
+    if (cnt) cnt.textContent = n + " / " + boxes.length;
+  }
+
+  ["lang", "os", "ide"].forEach(function (kind) {
+    $$("[data-set-" + kind + "]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        state[kind === "lang" ? "l" : kind] = b.getAttribute("data-set-" + kind);
+        save(); paint();
+      });
+    });
+  });
+  $$(".steps-nav input").forEach(function (b) {
+    b.addEventListener("change", function () { state.done[b.value] = b.checked; save(); paint(); });
+  });
+
+  $$(".prose pre").forEach(function (pre) {
+    if (pre.classList.contains("out")) return;
+    var btn = document.createElement("button");
+    btn.className = "copy"; btn.type = "button"; btn.textContent = "Copy";
+    btn.addEventListener("click", function () {
+      var text = (pre.querySelector("code") || pre).innerText;
+      var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy"; }, 1400); };
+      if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(done, function () {}); }
+      else {
+        var ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); done(); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+    });
+    pre.appendChild(btn);
+  });
+
+  paint();
+})();
+
+</script>
+</body>
+</html>
