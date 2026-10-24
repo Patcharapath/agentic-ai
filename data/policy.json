@@ -1,0 +1,53 @@
+{
+  "title": "DataWork Co., Ltd. - Contract policy (v3, 2026)",
+  "rules": [
+    {
+      "id": "R1",
+      "title": "Contract value",
+      "applies_to": "all contracts",
+      "text": "The contract must state the total contract value, or the fee and how it is calculated."
+    },
+    {
+      "id": "R2",
+      "title": "Termination notice",
+      "applies_to": "all contracts",
+      "text": "The contract must allow termination by written notice, and the notice period must be at least 30 days."
+    },
+    {
+      "id": "R3",
+      "title": "Director signature",
+      "applies_to": "contracts with a total value over 500,000 THB",
+      "text": "A contract whose total value is over 500,000 THB must be signed for the company by a director (กรรมการ). A manager's signature is not enough."
+    },
+    {
+      "id": "R4",
+      "title": "Service levels",
+      "applies_to": "service contracts",
+      "text": "A service contract must define service levels, including a maximum response time when a problem is reported."
+    },
+    {
+      "id": "R5",
+      "title": "Personal data protection",
+      "applies_to": "contracts where the supplier processes personal data for the company",
+      "text": "If the supplier will process personal data on the company's behalf, the contract must contain a data protection clause that refers to the Personal Data Protection Act (PDPA)."
+    },
+    {
+      "id": "R6",
+      "title": "Governing law",
+      "applies_to": "all contracts",
+      "text": "The contract must be governed by the laws of Thailand."
+    },
+    {
+      "id": "R7",
+      "title": "Payment terms",
+      "applies_to": "all contracts",
+      "text": "Payment must fall due no sooner than 30 days after the company receives a correct invoice."
+    },
+    {
+      "id": "R8",
+      "title": "Warranty",
+      "applies_to": "contracts to buy goods",
+      "text": "A contract to buy goods must give a warranty of at least 12 months."
+    }
+  ]
+}

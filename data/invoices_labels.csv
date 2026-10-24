@@ -1,0 +1,9 @@
+file,invoice_no,po_number,expected_verdict,issue
+inv_01.pdf,INV-SP-0101,PO-2026-135,approve,none
+inv_02.pdf,TI-55020,PO-7781,approve,none
+inv_03.pdf,OM-88240,PO-2026-121,reject,unit_price
+inv_04.pdf,INV-NC-0077,PO-2026-130,reject,total
+inv_05.pdf,INV-SP-0102,PO-2026-118,approve,none
+inv_06.pdf,OM-88241,PO-2026-140,reject,po_not_found
+inv_07.pdf,INV-SP-0103,PO-2026-135,reject,quantity
+inv_08.pdf,TI-55021,,reject,no_po
