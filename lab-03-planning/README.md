@@ -6,6 +6,7 @@
 |---|---|
 | `index.html` | คู่มือ lab |
 | `lab3_planning.th.ipynb`, `lab3_planning.en.ipynb` | Notebook สำหรับทำความเข้าใจทีละขั้น ทำส่วนนี้ก่อน |
+| `lab3_planning.solution.th.ipynb`, `lab3_planning.solution.ipynb` | เฉลยของ `# TODO` พร้อมคำอธิบายว่าทำไมเขียนแบบนี้ (ไทย, อังกฤษ) ลองทำเองก่อนค่อยเปิดดู |
 | `contract_review.py` | ตรวจสัญญาทั้งโฟลเดอร์ด้วยรูปแบบที่เลือก พร้อมบันทึกเหตุผลของการตรวจทุกข้อ มีคำตอบของ `# TODO` ใน notebook |
 | `contract_review.th.md`, `contract_review.en.md` | อธิบาย `contract_review.py` ทีละส่วน: อะไรเพิ่มจาก notebook และเพิ่มมาเพื่ออะไร |
 
@@ -47,7 +48,7 @@ uv run python lab-03-planning/contract_review.py --show-graph
 <details>
 <summary>English</summary>
 
-The full guide is `index.html` in this folder (open it in a browser). This page summarises how to run things from a terminal. Do the notebook first: `contract_review.py` contains the answers to its `# TODO` items. `contract_review.en.md` explains the program part by part.
+The full guide is `index.html` in this folder (open it in a browser). This page summarises how to run things from a terminal. Do the notebook first: `contract_review.py` contains the answers to its `# TODO` items. `contract_review.en.md` explains the program part by part. Answers to the `# TODO` items, with explanations of why they are written that way, are in `lab3_planning.solution.ipynb` (Thai: `lab3_planning.solution.th.ipynb`). Try them yourself first.
 
 Open a terminal in the `agentic-ai` folder (the one containing `pyproject.toml`), update, then run the program:
 
