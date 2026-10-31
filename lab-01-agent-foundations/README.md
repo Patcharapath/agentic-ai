@@ -6,6 +6,7 @@
 |---|---|
 | `index.html` | คู่มือ lab |
 | `lab1_inbox_agents.th.ipynb`, `lab1_inbox_agents.en.ipynb` | Notebook สำหรับทำความเข้าใจทีละขั้น ทำส่วนนี้ก่อน |
+| `lab1_inbox_agents.solution.ipynb` | เฉลยของ `# TODO` (อังกฤษ) ลองทำเองก่อนค่อยเปิดดู |
 | `inbox_app.py` | Agent ตัวเดียวกันที่เขียนเป็นโปรแกรมสำหรับรันจริง มีคำตอบของ `# TODO` ใน notebook |
 | `inbox_app.th.md`, `inbox_app.en.md` | อธิบาย `inbox_app.py` ทีละส่วน: อะไรเพิ่มจาก notebook และเพิ่มมาเพื่ออะไร |
 
@@ -48,7 +49,7 @@ uv run python lab-01-agent-foundations/inbox_app.py --reset --agent rules
 <details>
 <summary>English</summary>
 
-The full guide is `index.html` in this folder (open it in a browser). This page summarises how to run things from a terminal. Do the notebook first: `inbox_app.py` contains the answers to its `# TODO` items.
+The full guide is `index.html` in this folder (open it in a browser). This page summarises how to run things from a terminal. Do the notebook first: `inbox_app.py` contains the answers to its `# TODO` items. Answers to the `# TODO` items are in `lab1_inbox_agents.solution.ipynb`. Try them yourself first.
 
 Open a terminal in the `agentic-ai` folder (the one containing `pyproject.toml`), update, then run the program:
 

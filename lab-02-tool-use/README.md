@@ -6,6 +6,7 @@
 |---|---|
 | `index.html` | คู่มือ lab |
 | `lab2_tool_agent.th.ipynb`, `lab2_tool_agent.en.ipynb` | Notebook สำหรับทำความเข้าใจทีละขั้น ทำส่วนนี้ก่อน |
+| `lab2_tool_agent.solution.th.ipynb`, `lab2_tool_agent.solution.ipynb` | เฉลยของ `# TODO` พร้อมคำอธิบายว่าทำไมเขียนแบบนี้ (ไทย, อังกฤษ) ลองทำเองก่อนค่อยเปิดดู |
 | `invoice_agent.py` | Agent ตัวเดียวกันที่เขียนเป็นโปรแกรมสำหรับรันจริง มีคำตอบของ `# TODO` ใน notebook |
 | `invoice_agent.th.md`, `invoice_agent.en.md` | อธิบาย `invoice_agent.py` ทีละส่วน: อะไรเพิ่มจาก notebook และเพิ่มมาเพื่ออะไร |
 | `mcp_server.py` | ให้บริการ tools ผ่าน MCP ใช้ในส่วน Stretch ของ notebook |
@@ -51,7 +52,7 @@ uv run python lab-02-tool-use/invoice_agent.py --reset --max-steps 1 --limit 3
 <details>
 <summary>English</summary>
 
-The full guide is `index.html` in this folder (open it in a browser). This page summarises how to run things from a terminal. Do the notebook first: `invoice_agent.py` contains the answers to its `# TODO` items. `invoice_agent.en.md` explains the program part by part, and `mcp_server.py` serves the tools over MCP for the notebook's Stretch part.
+The full guide is `index.html` in this folder (open it in a browser). This page summarises how to run things from a terminal. Do the notebook first: `invoice_agent.py` contains the answers to its `# TODO` items. `invoice_agent.en.md` explains the program part by part, and `mcp_server.py` serves the tools over MCP for the notebook's Stretch part. Answers to the `# TODO` items, with explanations of why they are written that way, are in `lab2_tool_agent.solution.ipynb` (Thai: `lab2_tool_agent.solution.th.ipynb`). Try them yourself first.
 
 Open a terminal in the `agentic-ai` folder (the one containing `pyproject.toml`), update, then run the program:
 
